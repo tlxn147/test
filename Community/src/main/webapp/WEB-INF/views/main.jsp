@@ -12,7 +12,7 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 </head>
 <body>
-<h1>!! 여기가 메인화면 !! ${customerEmail} ${customerId}</h1>
+<!--  <h1>!! 여기가 메인화면 !! ${customerEmail} ${customerId}</h1> -->
 <span>
 	<a id="login_user" href="/kmweb/main/login"> 로그인 </a>
 	<a id="logout_user" href="/kmweb/main/logout"> 로그아웃 </a>
