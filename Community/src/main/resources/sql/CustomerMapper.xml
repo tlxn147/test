@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="customer">
+	<!-- 회원가입 -->
+	<insert id="main_signup" parameterType="kr.co.web.dto.Customer_dto">
+		insert into Customer_SignUp
+		set	customerId = #{customerId},
+			customerPW = #{customerPW},
+			customerName = #{customerName},
+			customerNickname = #{customerNickname},
+		    customerEmail = #{customerEmail},
+		    customerInterest = #{customerInterest},
+		    customerGender = #{customerGender}
+	</insert>
+	<!-- 회원가입 아이디 중복검사 -->
+	<select id="main_signup_user_id" resultType="String" parameterType="String">
+		select customerId from Customer_SignUp where customerId=#{customerId}
+	</select>
+	<!-- 회원가입 닉네임 중복검사 -->
+	<select id="main_signup_user_nickname" resultType="String" parameterType="String">
+		select customerNickname from Customer_SignUp where customerNickname=#{customerNickname}
+	</select>
+	<!-- 회원가입 이메일 중복검사 -->
+	<select id="main_signup_user_email" resultType="String" parameterType="String">
+		select customerEmail from Customer_SignUp where customerEmail=#{customerEmail}
+	</select>
+	<!-- 로그인 아이디 검사 -->
+	<select id="main_login_user_id" resultType="String" parameterType="String">
+		select customerId from Customer_SignUp where customerId=#{customerId}
+	</select>
+	<!-- 로그인 비밀번호 검사 -->
+	<select id="main_login_user_pw" resultType="kr.co.web.dto.Customer_dto" parameterType="String">
+		select * from Customer_SignUp where customerId=#{customerId}
+	</select>
+</mapper>
