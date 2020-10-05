@@ -5,6 +5,6 @@
 <title>Index</title>
 </head>
 	<body>
-	 	<a href="/kmweb/main"> 시작 </a> <br>
+	 	<a href="/kmweb/main"> 시작햐요 </a> <br>
 	</body>
 </html>
