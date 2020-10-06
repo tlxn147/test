@@ -1,8 +1,6 @@
 package kr.co.web.controller;
 
 import java.io.IOException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
