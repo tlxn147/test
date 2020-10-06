@@ -18,10 +18,10 @@ public class Customer_service {
 	Customer_Login_dao ld;
 	
 	// 회원가입
-	public void main_signup(Customer_dto dto) {
+	public int main_signup(Customer_dto dto) {
 		String email_num = dto.getCustomerEmail_1() + "@" + dto.getCustomerEmail_2();
 		dto.setCustomerEmail(email_num);
-		md.main_signup(dto);
+		return md.main_signup(dto);
 	}
 
 	// 회원가입 아이디 중복체크

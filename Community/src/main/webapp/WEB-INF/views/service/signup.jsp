@@ -87,6 +87,7 @@
 		<div id="interest_check"></div>
 		<br>
 		<input type="button" id="dataSubmit" value="회원가입">
+		<input type="button" id="dataSubmit" value="뒤로가기" onclick="history.go(-1)">
 		<div id="backLayer"></div>
 		<div id="pop" style="display: none"></div>
 	</form>

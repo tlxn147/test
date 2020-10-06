@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Customer_dto {
-	int customerNum;
+	int customerNo;
 	String customerId;
 	String customerPW;
 	String customerName;

@@ -1,13 +1,14 @@
 package kr.co.web.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -74,6 +74,12 @@ public class Customer_controller {
 	// 회원가입 insert
 	@RequestMapping(value = "success_signup", method = RequestMethod.POST)
 	public String success_signup(Customer_dto dto) throws Exception {
+		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor(); // Jasypt 암복호화 사용
+		encryptor.setPassword("somePassword");
+		encryptor.setAlgorithm("PBEWithMD5AndDES");
+		String str = dto.getCustomerPW();
+		String encStr = encryptor.encrypt(str); // 비밀번호 암호화
+		dto.setCustomerPW(encStr);
 		ms.main_signup(dto);
 		return "main";
 	}
@@ -102,16 +108,20 @@ public class Customer_controller {
 	//로그인
 	@RequestMapping(value="user_login_chk")
 	public String main_login_user_id(HttpSession session, String customerId, String customerPW) throws Exception {
+		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor(); // Jasypt 암복호화 사용
 		if(session.getAttribute("login") !=null) {
 			session.removeAttribute("login");
 	    }
 		String user_id = ms.main_login_user_id(customerId);
 		Customer_dto list = ms.main_login_user_pw(user_id);
+		encryptor.setPassword("somePassword");
+		encryptor.setAlgorithm("PBEWithMD5AndDES");
+		String decStr = encryptor.decrypt(list.getCustomerPW()); // 비밀번호 복호화
 		try {
-			if(list.getCustomerPW().equals(customerPW)) {
+			if(decStr.equals(customerPW)) {
 				session.setAttribute("customerId", user_id);
 				session.setAttribute("customerEmail", list.getCustomerEmail());
-				System.out.println(list.getCustomerEmail());
+				session.setAttribute("customergender", list.getCustomerGender());
 				return "main";
 			} else {
 		        session.setAttribute("fail", user_id);
