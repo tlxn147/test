@@ -39,8 +39,6 @@
 		</div>
 	</div>
 <script type='text/javascript'>
-        //<![CDATA[
-        // 사용할 앱의 JavaScript 키를 설정해 주세요.
         Kakao.init('YOUR KEY NUMBER');
         // 카카오 로그인 버튼을 생성합니다.
         Kakao.Auth.createLoginButton({
@@ -52,7 +50,6 @@
                 alert(JSON.stringify(err));
             }
         });
-      //]]>
 </script>
 <script type="text/javascript">
 $(function() {
