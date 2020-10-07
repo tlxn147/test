@@ -38,7 +38,6 @@
 			</a>
 		</div>
 	</div>
-<a href="/kmweb/main/signup"> 회원가입 </a>
 <script type='text/javascript'>
         //<![CDATA[
         // 사용할 앱의 JavaScript 키를 설정해 주세요.

@@ -46,7 +46,7 @@ public class Customer_service {
 		return ld.main_login_user_id(customerId);
 	}
 	
-	// 로그인 비밀번호 검사
+	// 로그인 비밀번호 검사 및 로그인 정보
 	public Customer_dto main_login_user_pw(String customerId) {
 		return ld.main_login_user_pw(customerId);
 	}

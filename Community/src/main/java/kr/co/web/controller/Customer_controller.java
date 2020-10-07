@@ -48,10 +48,14 @@ public class Customer_controller {
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public ModelAndView memberLoginForm(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-        String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session); // 네이버 로그인 세션
-		String kakaoUrl = KakaoController.getAuthorizationUrl(session); // 카카오 로그인 세션
-		mav.addObject("kakao_url", kakaoUrl); // 카카
+		// 생성된 URL을 naverAuthUrl에 저장
+        String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
+        // 생성된 URL을 kakaoUrl에 저장
+        String kakaoUrl = KakaoController.getAuthorizationUrl(session);
+		// naverAuthUrl 저장된 URL을 'naver_url'라는 KEY 값에 담아서 모델로 전송
 		mav.addObject("naver_url", naverAuthUrl);
+		// kakaoUrl 저장된 URL을 'kakao_url'라는 KEY 값에 담아서 모델로 전송
+		mav.addObject("kakao_url", kakaoUrl); 
 		mav.setViewName("service/login");
 		return mav;
 	}
@@ -72,7 +76,8 @@ public class Customer_controller {
 	// 회원가입 insert
 	@RequestMapping(value = "success_signup", method = RequestMethod.POST)
 	public String success_signup(Customer_dto dto) throws Exception {
-		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor(); // Jasypt 암복호화 사용
+		// Jasypt 설정으로 DB 정보 암호화
+		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
 		encryptor.setPassword("somePassword");
 		encryptor.setAlgorithm("PBEWithMD5AndDES");
 		String str = dto.getCustomerPW();
@@ -106,10 +111,11 @@ public class Customer_controller {
 	//로그인
 	@RequestMapping(value="user_login_chk")
 	public String main_login_user_id(HttpSession session, String customerId, String customerPW) throws Exception {
-		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor(); // Jasypt 암복호화 사용
+		// Jasypt 설정으로 DB 정보 암호화
+		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
 		if(session.getAttribute("login") !=null) {
 			session.removeAttribute("login");
-	    }
+	    } // 로그인 세션 연결 해제
 		String user_id = ms.main_login_user_id(customerId);
 		Customer_dto list = ms.main_login_user_pw(user_id);
 		encryptor.setPassword("somePassword");
@@ -117,9 +123,7 @@ public class Customer_controller {
 		String decStr = encryptor.decrypt(list.getCustomerPW()); // 비밀번호 복호화
 		try {
 			if(decStr.equals(customerPW)) {
-				session.setAttribute("customerId", user_id);
-				session.setAttribute("customerEmail", list.getCustomerEmail());
-				session.setAttribute("customergender", list.getCustomerGender());
+				session.setAttribute("login", list);
 				return "main";
 			} else {
 		        session.setAttribute("fail", user_id);
@@ -139,24 +143,30 @@ public class Customer_controller {
 	}
 
 	// 카카오 로그인
-	@RequestMapping(value = "kakaologin", produces = "application/json", method = { RequestMethod.GET, RequestMethod.POST })
-	public String kakaoLogin(@RequestParam("code") String code,
-			HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
-		JsonNode node = KakaoController.getAccessToken(code); // accessToken에 사용자의 로그인한 모든 정보가 들어있음
+	@RequestMapping(value = "kakaologin", method = { RequestMethod.GET, RequestMethod.POST })
+	public String kakaoLogin(@RequestParam("code") String code, Customer_dto list,
+			HttpServletResponse response, HttpSession session) throws Exception {
+		if(session.getAttribute("login") !=null) {
+			session.removeAttribute("login");
+	    } // 로그인 세션 연결 해제
+		JsonNode node = KakaoController.getAccessToken(code); // accessToken에 사용자의 로그인한 모든 정보가 들어있다.
 		JsonNode accessToken = node.get("access_token"); // 사용자의 정보
 		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken);
-		String kname = null;
 		JsonNode properties = userInfo.path("properties");
-		kname = properties.path("nickname").asText(); // 카카오 로그인 이름 가져옴
-		session.setAttribute("customerId", kname); 
+		list.setCustomerEmail("카카오 로그인"); // 카카오 로그인은 이메일을 못가져옵니다.
+		list.setCustomerId(properties.path("nickname").asText()); // 카카오 로그인 이름 가져온다.
+		session.setAttribute("login", list); 
 		return "redirect:main";
 	}
 	
 	// 네이버 로그인
     @RequestMapping(value = "naverlogin", method = { RequestMethod.GET, RequestMethod.POST })
-    public String callback(Model m, @RequestParam String code, @RequestParam String state, HttpSession session)
-            throws IOException {
-        OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
+    public String callback(Model m, @RequestParam String code, Customer_dto list,
+    		@RequestParam String state, HttpSession session) throws IOException {
+    	if(session.getAttribute("login") !=null) {
+			session.removeAttribute("login");
+	    } // 로그인 세션 연결 해제
+    	OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
         apiResult = naverLoginBO.getUserProfile(oauthToken);
         JSONParser parser = new JSONParser();
         Object obj = null;
@@ -167,10 +177,9 @@ public class Customer_controller {
         }
         JSONObject jsonobj = (JSONObject) obj;
         JSONObject response = (JSONObject) jsonobj.get("response");
-        String nname = (String) response.get("name"); // 네이버 로그인 이름 가져옴
-        String nemail = (String) response.get("email");  // 네이버 로그인 이메일 가져옴
-        session.setAttribute("customerId", nname); 
-        session.setAttribute("customerEmail", nemail);
+        list.setCustomerId((String) response.get("name")); // 네이버 로그인 이름 가져옴
+        list.setCustomerEmail((String) response.get("email")); // 네이버 로그인 이메일 가져온다.
+        session.setAttribute("login", list);
         m.addAttribute("result", apiResult);
         return "redirect:main";
     }
