@@ -31,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select customerId from Customer_SignUp where customerId=#{customerId}
 	</select>
 	<!-- 로그인 비밀번호 검사 -->
-	<select id="main_login_user_pw" resultType="kr.co.web.dto.Customer_dto" parameterType="String">
+	<select id="main_login_user" resultType="kr.co.web.dto.Customer_dto" parameterType="String">
 		select * from Customer_SignUp where customerId=#{customerId}
 	</select>
 </mapper>
