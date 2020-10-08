@@ -175,16 +175,15 @@ public class Customer_controller {
  	      return "redirect:main";
  	}
  	/* 상세정보 및 비밀번호 변경 */
- 	@RequestMapping(value="user_details", method = RequestMethod.POST)
+ 	@RequestMapping(value="user-details", method = RequestMethod.GET)
     public String main_user_details(Model m, HttpSession session) {
  		if(session.getAttribute("login") == null) {
 			return "login";
 	    } else {
 	    	String id = ((Customer_dto) session.getAttribute("login")).getCustomerId();
 	 		Customer_dto list = ms.main_login_user(id);
+	 		session.setAttribute("login", list);
 	    }
- 		
-		return apiResult;
- 		
+		return "service/details";
  	}
 }
