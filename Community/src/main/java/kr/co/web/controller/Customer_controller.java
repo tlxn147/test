@@ -163,7 +163,7 @@ public class Customer_controller {
         JSONObject jsonobj = (JSONObject) obj;
         JSONObject response = (JSONObject) jsonobj.get("response");
         list.setCustomerId((String) response.get("name")); // 네이버 로그인 이름 가져옴
-        list.setCustomerEmail((String) response.get("email")); // 네이버 로그인 이메일 가져온다.
+        list.setCustomerEmail("네이버 로그인"); // 네이버 로그인 이메일 가져온다.
         session.setAttribute("login", list);
         m.addAttribute("result", apiResult);
         return "redirect:main";

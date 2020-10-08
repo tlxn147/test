@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+
+
+<!-- IT게시판 리스트 +페이징+검색 -->
+<select id ="it_board" parameterType ="hashMap" resultType = "kr.co.board.dto.ItBoard_Dto"> 
+
+Select postNo, postTitle, customerNickname, postDate, commentsCount, postCategory from IT_Category
+
+<if test='searchType.equals("postTitle")'>
+where postTitle LIKE concat('%',#{keyword},'%')
+</if>
+
+<if test='searchType.equals("contents")'>
+where contents LIKE concat('%',#{keyword},'%')
+</if>
+
+<if test='searchType.equals("postTitle_contents")'>
+where postTitle LIKE concat('%',#{keyword},'%') or contents LIKE concat('%',#{keyword},'%')
+</if>
+
+<if test='searchType.equals("customerNickname")'>
+where customerNickname LIKE concat('%',#{keyword},'%')
+</if>
+
+order by postNo DESC limit #{displayPost}, #{postNum}
+
+</select>
+
+<!-- IT게시판 총 갯수 + 검색 적용 -->
+<select id="it_count" parameterType="hashMap" resultType="int">
+
+Select count(postNo) from IT_Category 
+
+<if test='searchType.equals("postTitle")'>
+where postTitle LIKE concat('%',#{keyword},'%')
+</if>
+
+<if test='searchType.equals("contents")'>
+where contents LIKE concat('%',#{keyword},'%')
+</if>
+
+<if test='searchType.equals("postTitle_contents")'>
+where postTitle LIKE concat('%',#{keyword},'%') or contents LIKE concat('%',#{keyword},'%')
+</if>
+
+<if test='searchType.equals("customerNickname")'>
+where customerNickname LIKE concat('%',#{keyword},'%')
+</if>
+ 
+</select>
+
+<!-- IT게시판 글 작성 -->
+<insert id="it_write" parameterType = "kr.co.board.dto.ItBoard_Dto">
+
+insert into IT_Category
+set postTitle =#{postTitle},
+    customerNickname=#{customerNickname},
+    postDate=#{postDate},
+    contents=#{contents},
+    postCategory=#{postCategory},
+    customerNo=#{customerNo}
+    
+</insert>
+
+<!-- It게시판 글 조회 -->
+<select id ="it_view" parameterType = "int" resultType = "kr.co.board.dto.ItBoard_Dto">
+
+select postNo, postTitle, customerNickname, postDate, contents, postCategory, customerNo from IT_Category where postNo= #{postNo}
+
+</select>
+
+<!-- It게시판 글 수정 -->
+<update id ="it_update" parameterType= "kr.co.board.dto.ItBoard_Dto">
+
+Update IT_Category 
+set postTitle = #{postTitle},
+    postCategory = #{postCategory},
+    postDate = #{postDate},
+    contents = #{contents}
+    where postNo = #{postNo}
+
+</update>
+
+<!-- It게시판 글 삭제 -->
+<delete id ="it_delete" parameterType = "int">
+
+Delete from IT_Category where postNo = #{postNo}
+
+</delete>
+
+<!-- IT게시판 답글 갯수 수정 -->
+<update id ="it_commentsCount_update" parameterType="hashMap">
+
+Update IT_Category
+set commentsCount =#{commentsCount}
+where postNo =#{postNo}
+
+</update>
+
+
+</mapper>

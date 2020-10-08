@@ -61,4 +61,8 @@
 	<bean id="customer_Login_dao" class="kr.co.web.dao.Customer_Login_dao"
 		p:sqlSessionFactory-ref="sqlSessionFactory" />
 	<bean id="naverLoginBO" class="kr.co.naver.NaverLoginBO" />
+		<bean id="itBoard_Dao" class="kr.co.board.dao.ItBoard_Dao"
+	    p:sqlSessionFactory-ref="sqlSessionFactory" />
+	<bean id="itBoardReply_Dao" class="kr.co.boardReply.dao.ItBoardReply_Dao" 
+	    p:sqlSessionFactory-ref="sqlSessionFactory" />   
 </beans>

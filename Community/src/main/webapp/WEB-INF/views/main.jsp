@@ -27,5 +27,10 @@
 	</c:otherwise>
 </c:choose><br>
 <a href="/kmweb/main/signup"> 회원가입 </a>
+	<a href="/kmweb/board/itCategory">it</a> <br>
+	<a href="/kmweb/board/languageCategory">외국어</a> <br>
+	<a href="/kmweb/board/publicServantCategory">공무원</a> <br>
+	<a href="/kmweb/board/certificateCategory">자격증</a> <br>
+	<a href="/kmweb/board/etcCategory">기타</a> <br>
 </body>
 </html>

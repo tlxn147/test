@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="boardReply">
+
+<!--IT 댓글 조회 -->
+<select id="it_commentsList" parameterType="int" resultType="kr.co.boardReply.dto.ItBoardReply_Dto">
+	select
+		*
+	from IT_Comments
+		where postNo = #{postNo}		
+</select>
+
+<!--IT 댓글 작성 -->
+<insert id="it_commentWrite" parameterType="kr.co.boardReply.dto.ItBoardReply_Dto">
+	insert into IT_Comments(postNo, customerNickname, comments, postDate, customerNo)
+		value(#{postNo}, #{customerNickname}, #{comments}, #{postDate}, #{customerNo})
+</insert>
+	
+<!--IT 댓글 수정 -->
+<update id="it_commentUpdate" parameterType="kr.co.boardReply.dto.ItBoardReply_Dto">
+	update IT_Comments set
+		comments = #{comments},
+		postDate = #{postDate}
+	where commentsNo = #{commentsNo}
+		and postNo = #{postNo}	
+</update>
+
+<!--IT 댓글 삭제 -->
+<delete id="it_commentDelete" parameterType="hashMap">
+	delete from IT_Comments
+	where commentsNo = #{commentsNo}
+		and postNo = ${postNo}	
+</delete>
+
+<!-- IT 하나의 글에 대한 답글 수  조회-->
+<select id="it_comments_count" parameterType="int" resultType="int">
+
+Select count(*) from IT_Comments where postNo = #{postNo}
+
+</select>
+
+
+
+</mapper>
