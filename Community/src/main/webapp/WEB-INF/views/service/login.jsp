@@ -53,7 +53,7 @@
 </script>
 <script type="text/javascript">
 $(function() {
-	if("${fail}" != "" || "${fail}" == null){
+	if("${fail}" != "" || "${fail}" == null || ){
 		pw_login_chk.innerHTML='가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.';
 	}
 	$('#login_chk').click(function() {
