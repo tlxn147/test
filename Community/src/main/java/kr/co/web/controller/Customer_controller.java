@@ -110,12 +110,12 @@ public class Customer_controller {
 		if(session.getAttribute("login") !=null) {
 			session.removeAttribute("login");
 	    } // 로그인 세션 연결 해제
-		String user_id = ms.main_login_user_id(customerId);
-		Customer_dto list = ms.main_login_user(user_id);
-		encryptor.setPassword("somePassword");
-		encryptor.setAlgorithm("PBEWithMD5AndDES");
-		String decStr = encryptor.decrypt(list.getCustomerPW()); // 비밀번호 복호화
 		try {
+			String user_id = ms.main_login_user_id(customerId);
+			Customer_dto list = ms.main_login_user(user_id);
+			encryptor.setPassword("somePassword");
+			encryptor.setAlgorithm("PBEWithMD5AndDES");
+			String decStr = encryptor.decrypt(list.getCustomerPW()); // 비밀번호 복호화
 			if(decStr.equals(customerPW)) {
 				session.setAttribute("login", list);
 				return "main";
