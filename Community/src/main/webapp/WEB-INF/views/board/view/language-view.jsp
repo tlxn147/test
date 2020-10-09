@@ -14,6 +14,8 @@
 <input type="text" name="postTitle" value="${view.postTitle}" readonly/><br/>
 <label>글 분류</label>
 <input type="text" name="postCategory" value="${view.postCategory}" readonly/><br/>
+<label>조회수</label>
+<input type="text" name="viewCount" value="${view.viewCount}" readonly/><br/>
 <label>작성일</label>
 <input type="text" name="postDate" value="${time}" readonly/><br/>
 <label>작성자</label>

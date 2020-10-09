@@ -8,7 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- IT게시판 리스트 +페이징+검색 -->
 <select id ="it_board" parameterType ="hashMap" resultType = "kr.co.board.dto.ItBoard_Dto"> 
 
-Select postNo, postTitle, customerNickname, postDate, commentsCount, postCategory from IT_Category
+Select postNo, postTitle, customerNickname, postDate, commentsCount, postCategory, viewCount from IT_Category
 
 <if test='searchType.equals("postTitle")'>
 where postTitle LIKE concat('%',#{keyword},'%')
@@ -69,9 +69,19 @@ set postTitle =#{postTitle},
 <!-- It게시판 글 조회 -->
 <select id ="it_view" parameterType = "int" resultType = "kr.co.board.dto.ItBoard_Dto">
 
-select postNo, postTitle, customerNickname, postDate, contents, postCategory, customerNo from IT_Category where postNo= #{postNo}
+select postNo, postTitle, customerNickname, postDate, contents, postCategory, customerNo, viewCount from IT_Category where postNo= #{postNo}
 
 </select>
+
+<!-- IT글 조회수 업데이트 문 -->
+<update id = "itViewCnt_update" parameterType="int">
+
+update IT_Category set viewCount = viewCount + 1 
+
+where postNo = #{postNo}
+
+</update>
+
 
 <!-- It게시판 글 수정 -->
 <update id ="it_update" parameterType= "kr.co.board.dto.ItBoard_Dto">
@@ -106,7 +116,7 @@ where postNo =#{postNo}
 <!-- language게시판 리스트 +페이징+검색 -->
 	<select id ="language_board" parameterType ="hashMap" resultType = "kr.co.board.dto.LanguageBoard_Dto"> 
 
-	Select postNo, postTitle, customerNickname, postDate, commentsCount, postCategory from Language_Category
+	Select postNo, postTitle, customerNickname, postDate, commentsCount, postCategory, viewCount from Language_Category
 
 	<if test='searchType.equals("postTitle")'>
 	where postTitle LIKE concat('%',#{keyword},'%')
@@ -167,9 +177,19 @@ where postNo =#{postNo}
 	<!-- language게시판 글 조회 -->
 	<select id ="language_view" parameterType = "int" resultType = "kr.co.board.dto.LanguageBoard_Dto">
 
-	select postNo, postTitle, customerNickname, postDate, contents, postCategory, customerNo from language_Category where postNo= #{postNo}
+	select postNo, postTitle, customerNickname, postDate, contents, postCategory, customerNo, viewCount from language_Category where postNo= #{postNo}
 
 	</select>
+	
+	<!-- language 글 조회수 업데이트 문 -->
+    <update id = "languageViewCnt_update" parameterType="int">    
+
+    update Language_Category set viewCount = viewCount + 1 
+
+    where postNo = #{postNo}
+
+    </update>
+	
 
 	<!-- language게시판 글 수정 -->
 	<update id ="language_update" parameterType= "kr.co.board.dto.LanguageBoard_Dto">

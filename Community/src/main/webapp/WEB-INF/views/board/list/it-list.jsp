@@ -19,6 +19,7 @@
    <th>제목</th>
    <th>닉네임</th>
    <th>작성일</th>
+   <th>조회수</th>
    <th>총댓글수</th>
    
   </tr>
@@ -35,6 +36,7 @@
   <td><a href="/kmweb/board/itCategoryView?postNo=${list.postNo}">${list.postTitle}</a></td>
   <td>${list.customerNickname}</td>
   <td>${time}</td>
+  <td>${list.viewCount}</td>
   <td>${list.commentsCount}</td>
  </tr>
 

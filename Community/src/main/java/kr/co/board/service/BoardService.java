@@ -51,6 +51,11 @@ public class BoardService {
 		return itDao.itCategoryView(postNo);
 	}
 	
+	//IT글 조회수 변경
+    public int itViewCountUpdate(int postNo) throws Exception{
+    	return itDao.itViewCountUpdate(postNo);
+    }
+	
 	//It 글 수정
 	public int itCategoryUpdate(ItBoard_Dto dto) throws Exception{
 		return itDao.itCategoryUpdate(dto);
@@ -114,6 +119,11 @@ public class BoardService {
   		public LanguageBoard_Dto languageCategoryView(int postNo) throws Exception {
   			return languageDao.languageCategoryView(postNo);
   		}
+  		
+  	    //Language글 조회수 변경
+  	    public int languageViewCountUpdate(int postNo) throws Exception{
+  	    	return languageDao.languageViewCountUpdate(postNo);
+  	    }
   		
   		//Language 글 수정
   		public int languageCategoryUpdate(LanguageBoard_Dto dto) throws Exception{

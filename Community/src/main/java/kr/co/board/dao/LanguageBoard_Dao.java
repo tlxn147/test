@@ -33,6 +33,11 @@ public class LanguageBoard_Dao extends SqlSessionDaoSupport   {
 		return getSqlSession().selectOne("board.language_view",postNo);
 	}
 	
+	//Language글 조회수 변경
+    public int languageViewCountUpdate(int postNo) throws Exception{
+    	return getSqlSession().update("board.languageViewCnt_update",postNo);
+    }
+	
 	//Language 글 수정
 	public int languageCategoryUpdate(LanguageBoard_Dto dto) throws Exception {
 		return getSqlSession().update("board.language_update",dto);

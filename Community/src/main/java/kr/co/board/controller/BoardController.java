@@ -87,6 +87,8 @@ public class BoardController {
 	@RequestMapping(value="/itCategoryView",method = RequestMethod.GET)
 	public String itCategoryView(@RequestParam("postNo") int postNo, Model model) throws Exception{
 		
+		service.itViewCountUpdate(postNo); //글 조회 수 추가되는 메소드
+		
 		ItBoard_Dto dto = service.itCategoryView(postNo);
 		
 		model.addAttribute("view", dto);
@@ -215,9 +217,11 @@ public class BoardController {
 			return "redirect:/board/languageCategory";
 		}
 		
-		//it 글 조회 페이지 이동
+		//language 글 조회 페이지 이동
 		@RequestMapping(value="/languageCategoryView",method = RequestMethod.GET)
 		public String languageCategoryView(@RequestParam("postNo") int postNo, Model model) throws Exception{
+			
+			service.languageViewCountUpdate(postNo); //글 조회 수 추가되는 메소드
 			
 			LanguageBoard_Dto dto = service.languageCategoryView(postNo);
 			

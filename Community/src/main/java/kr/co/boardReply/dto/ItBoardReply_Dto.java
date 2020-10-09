@@ -9,6 +9,7 @@ public class ItBoardReply_Dto {
 	private int customerNo; //작성자 고유 번호
 	private String comments; //내용
 	private Date postDate; //작성일
+	
 	public int getCommentsNo() {
 		return commentsNo;
 	}

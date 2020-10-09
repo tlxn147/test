@@ -12,6 +12,8 @@ public class ItBoard_Dto {
     private int commentsCount;  //총댓글수 
     private String postCategory;   //글분류 
     private int customerNo; //유저번호' 
+    private int viewCount; // 조회수
+    
 	public int getPostNo() {
 		return postNo;
 	}
@@ -60,4 +62,11 @@ public class ItBoard_Dto {
 	public void setCustomerNo(int customerNo) {
 		this.customerNo = customerNo;
 	}
+	public int getViewCount() {
+		return viewCount;
+	}
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
+	}
+	
 }

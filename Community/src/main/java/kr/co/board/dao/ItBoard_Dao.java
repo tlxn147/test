@@ -33,6 +33,11 @@ public class ItBoard_Dao extends SqlSessionDaoSupport   {
 		return getSqlSession().selectOne("board.it_view",postNo);
 	}
 	
+	//IT글 조회수 변경
+    public int itViewCountUpdate(int postNo) throws Exception{
+    	return getSqlSession().update("board.itViewCnt_update",postNo);
+    }
+	
 	//IT 글 수정
 	public int itCategoryUpdate(ItBoard_Dto dto) throws Exception {
 		return getSqlSession().update("board.it_update",dto);
