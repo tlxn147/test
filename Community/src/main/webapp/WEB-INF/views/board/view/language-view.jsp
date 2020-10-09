@@ -1,13 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html>
 <script src="//code.jquery.com/jquery-3.5.1.min.js"></script>
 <head>
 <meta charset="UTF-8">
-<title>it_category</title>
+<title>language_category</title>
 </head>
 <body>
 <fmt:formatDate var="time" value="${view.postDate}" pattern="yyyy.MM.dd" />
@@ -20,9 +19,9 @@
 <label>작성자</label>
 <input type="text" name="customerNickname" value="${view.customerNickname}" readonly/><br/>
 <textarea name="contents" cols="40" rows="8">${view.contents}</textarea><br/>
-<button type="button" id="btn_update" onclick="location.href='/kmweb/board/itCategoryUpdate?postNo=${view.postNo}'" >수정하기</button>
-<button type="button" id="btn_delete" onclick="location.href='/kmweb/board/itCategoryDelete?postNo=${view.postNo}'">삭제하기</button>
-<button type="button" onclick="location.href='/kmweb/board/itCategory'">목록</button>
+<button type="button" id="btn_update" onclick="location.href='/kmweb/board/languageCategoryUpdate?postNo=${view.postNo}'" >수정하기</button>
+<button type="button" id="btn_delete" onclick="location.href='/kmweb/board/languageCategoryDelete?postNo=${view.postNo}'">삭제하기</button>
+<button type="button" onclick="location.href='/kmweb/board/languageCategory'">목록</button>
 <!-- 댓글 -->
 
 <hr />
@@ -32,7 +31,7 @@
 <li>
 	<div>
 		<p>${comment.customerNickname} / <fmt:formatDate value="${comment.postDate}" pattern="yyyy-MM-dd" /> </p>  
-		<p>${comment.comments}</p> <button type="button" id="btn_commentDelete" onclick="location.href='/kmweb/board/itCommentDelete?postNo=${comment.postNo}&commentsNo=${comment.commentsNo}'">삭제</button>    
+		<p>${comment.comments}</p> <button type="button" id="btn_commentDelete" onclick="location.href='/kmweb/board/languageCommentDelete?postNo=${comment.postNo}&commentsNo=${comment.commentsNo}'">삭제</button>    
 	</div>
 </li>
 <!-- 내 작성 댓글만 지우게 버튼 보이기 -->
@@ -48,7 +47,7 @@ $(document).ready(function(){
 </c:forEach>
 </ul>
 <div>
-    <form method = "post" action = "/kmweb/board/itCommentReply">
+    <form method = "post" action = "/kmweb/board/languageCommentReply">
     
     <label>댓글 작성자</label>
     <input type="text" name="customerNickname" value="${login.customerNickname}" readonly><br/>

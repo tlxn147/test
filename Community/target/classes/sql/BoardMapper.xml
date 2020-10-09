@@ -101,5 +101,102 @@ where postNo =#{postNo}
 
 </update>
 
+<!-- ============================================================================================================== -->
+
+<!-- language게시판 리스트 +페이징+검색 -->
+	<select id ="language_board" parameterType ="hashMap" resultType = "kr.co.board.dto.LanguageBoard_Dto"> 
+
+	Select postNo, postTitle, customerNickname, postDate, commentsCount, postCategory from Language_Category
+
+	<if test='searchType.equals("postTitle")'>
+	where postTitle LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("contents")'>
+	where contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("postTitle_contents")'>
+	where postTitle LIKE concat('%',#{keyword},'%') or contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("customerNickname")'>
+	where customerNickname LIKE concat('%',#{keyword},'%')
+	</if>
+
+	order by postNo DESC limit #{displayPost}, #{postNum}
+
+	</select>
+
+	<!-- language게시판 총 갯수 + 검색 적용 -->
+	<select id="language_count" parameterType="hashMap" resultType="int">
+
+	Select count(postNo) from language_Category 
+
+	<if test='searchType.equals("postTitle")'>
+	where postTitle LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("contents")'>
+	where contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("postTitle_contents")'>
+	where postTitle LIKE concat('%',#{keyword},'%') or contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("customerNickname")'>
+	where customerNickname LIKE concat('%',#{keyword},'%')
+	</if>
+	 
+	</select>
+
+	<!-- language게시판 글 작성 -->
+	<insert id="language_write" parameterType = "kr.co.board.dto.LanguageBoard_Dto">
+
+	insert into language_Category
+	set postTitle =#{postTitle},
+	    customerNickname=#{customerNickname},
+	    postDate=#{postDate},
+	    contents=#{contents},
+	    postCategory=#{postCategory},
+	    customerNo=#{customerNo}
+	    
+	</insert>
+
+	<!-- language게시판 글 조회 -->
+	<select id ="language_view" parameterType = "int" resultType = "kr.co.board.dto.LanguageBoard_Dto">
+
+	select postNo, postTitle, customerNickname, postDate, contents, postCategory, customerNo from language_Category where postNo= #{postNo}
+
+	</select>
+
+	<!-- language게시판 글 수정 -->
+	<update id ="language_update" parameterType= "kr.co.board.dto.LanguageBoard_Dto">
+
+	Update language_Category 
+	set postTitle = #{postTitle},
+	    postCategory = #{postCategory},
+	    postDate = #{postDate},
+	    contents = #{contents}
+	    where postNo = #{postNo}
+
+	</update>
+
+	<!-- It게시판 글 삭제 -->
+	<delete id ="language_delete" parameterType = "int">
+
+	Delete from language_Category where postNo = #{postNo}
+
+	</delete>
+
+	<!-- language게시판 답글 갯수 수정 -->
+	<update id ="language_commentsCount_update" parameterType="hashMap">
+
+	Update language_Category
+	set commentsCount =#{commentsCount}
+	where postNo =#{postNo}
+
+	</update>
 
 </mapper>
