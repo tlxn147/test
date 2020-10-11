@@ -34,4 +34,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="main_login_user" resultType="kr.co.web.dto.Customer_dto" parameterType="String">
 		select * from Customer_SignUp where customerId=#{customerId}
 	</select>
+	<update id="user_pw_chan" parameterType="map"> 
+		update customer_signup
+		set customerPW = #{customerPW}
+		where customerId = #{customerId}
+	</update>
 </mapper>

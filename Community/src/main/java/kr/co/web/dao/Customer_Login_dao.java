@@ -1,5 +1,7 @@
 package kr.co.web.dao;
 
+import java.util.Map;
+
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 
 
@@ -19,5 +21,9 @@ public class Customer_Login_dao extends SqlSessionDaoSupport {
 	// 비밀번호 검사 및 로그인 정보
 	public Customer_dto main_login_user(String customerId) {
 		return getSqlSession().selectOne("customer.main_login_user", customerId);
+	}
+	// 비밀번호 변경
+	public int user_pw_chan(Map<String, Object> m) {
+		return getSqlSession().update("customer.user_pw_chan", m);
 	}
 }

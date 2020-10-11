@@ -33,5 +33,6 @@
 		<td>${login.customerInterest}</td>
 	</tr>
 </table>
+	<a id="user_details" href="/kmweb/main/user-pw-chan"> 비밀번호 변경 </a><br>
 </body>
 </html>

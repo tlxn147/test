@@ -3,7 +3,6 @@ package kr.co.board.dto;
 import java.util.Date;
 
 public class ItBoard_Dto {
-	
 	private int postNo; //글번호 
     private String postTitle; //문의글제목 
     private String customerNickname; //유저닉네임 
