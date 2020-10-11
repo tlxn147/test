@@ -65,7 +65,7 @@ $(document).ready(function(){
 <!-- 자기 글만 수정 삭제 버튼 보이기 -->
 <script type="text/javascript">
 $(document).ready(function(){
-	var loginNo = ${customerNo};
+	var loginNo = ${login.customerNo};
 	var writerNo = ${view.customerNo};
 	if(loginNo != writerNo){
 		$("#btn_update").hide()

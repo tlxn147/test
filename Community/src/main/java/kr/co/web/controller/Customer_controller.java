@@ -174,16 +174,68 @@ public class Customer_controller {
  	      session.invalidate();
  	      return "redirect:main";
  	}
- 	/* 상세정보 및 비밀번호 변경 */
+ 	// 상세정보
  	@RequestMapping(value="user-details", method = RequestMethod.GET)
     public String main_user_details(Model m, HttpSession session) {
  		if(session.getAttribute("login") == null) {
-			return "login";
+			return "service/login";
 	    } else {
 	    	String id = ((Customer_dto) session.getAttribute("login")).getCustomerId();
 	 		Customer_dto list = ms.main_login_user(id);
 	 		session.setAttribute("login", list);
+			return "service/details";
 	    }
-		return "service/details";
  	}
+ 	// 비밀번호 변경 화면
+ 	@RequestMapping(value="user-pw-chan", method = RequestMethod.GET)
+    public String user_pw_chan(Model m, HttpSession session) {
+ 		if(session.getAttribute("login") == null) {
+			return "service/login";
+	    } else {
+			return "service/user_pw_chan";
+	    }
+ 	}
+ 	// 비밀번호 변경
+  	@RequestMapping(value="user_pw_chan_update",  method = { RequestMethod.GET, RequestMethod.POST })
+    public String user_pw_chan_update(HttpSession session, String current_pw, String new_pw) {
+  		if(session.getAttribute("login") == null) {
+ 			return "service/login";
+ 	    } else {
+			try {
+		 	    // Jasypt 설정으로 DB 정보 암호화
+				StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+				// 현재 비밀번호 입력
+				Customer_dto list = ms.main_login_user(((Customer_dto) session.getAttribute("login")).getCustomerId());
+				encryptor.setPassword("somePassword");
+				encryptor.setAlgorithm("PBEWithMD5AndDES");
+				String current_pw_db = encryptor.decrypt(list.getCustomerPW()); // db 암호화된 비밀번호 복호화 후 가져옴
+				System.out.println("db에 저장된 비밀번호 : " + current_pw_db);
+				System.out.println("입력한 비밀번호 : " + current_pw);
+				if(current_pw_db.equals(current_pw)) {
+					StandardPBEStringEncryptor encrypt = new StandardPBEStringEncryptor();
+				 	System.out.println(new_pw);
+					// 변경 할 비밀번호 입력
+				 	encrypt.setPassword("somePassword");
+				 	encrypt.setAlgorithm("PBEWithMD5AndDES");
+				 	System.out.println(new_pw);
+					String encryptPW = encrypt.encrypt(new_pw); // 비밀번호 암호화
+				 	System.out.println(new_pw);
+				 	ms.user_pw_chan(list.getCustomerId(), encryptPW);
+					// 비밀번호가 변경 되었을 경우
+			        session.setAttribute("pw_chan", true);
+			 		return "service/details";
+				} else {
+					System.out.println("1번");
+					// 비밀번호가 틀렸을 경우
+			        session.setAttribute("pw_chan", false);
+					return "service/user_pw_chan";
+				}
+			} catch (Exception e) {
+				System.out.println("2번" );
+				// 비밀번호가 틀렸을 경우
+		        session.setAttribute("pw_chan", false);
+				return "service/user_pw_chan";
+			}
+ 	    }
+  	}
 }
