@@ -4,14 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>IT</title>
+<title>language_category</title>
 </head>
 <body>
 
 <form method="post">
 
 <label>제목</label>
-<input type="text" name="postTitle" value="${view.postTitle}"/><br/>
+<input type="text" name="postTitle"/><br/>
 
 <label>글 분류</label>
 <select name="postCategory">
@@ -20,11 +20,12 @@
   <option value="질문">질문</option>
   <option value="기타">기타</option>
 </select><br/>
-<textarea name="contents" cols="40" rows="8">${view.contents}</textarea><br/>
-<input type="hidden" name="postNo" value="${view.postNo}"/>
+<textarea name="contents" cols="40" rows="8"></textarea><br/>
 
-<button type="submit">수정</button>
-<button type="button" onclick="history.go(-1)">취소</button>
+<input type ="hidden" name="customerNickname" value="${login.customerNickname}"/>
+<input type ="hidden" name="customerNo" value="${login.customerNo}"/>
+
+<button type="submit">작성</button>
 </form>
 
 </body>

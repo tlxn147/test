@@ -1,6 +1,7 @@
 package kr.co.board.dao;
 
 import java.util.HashMap;
+
 import java.util.List;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -31,6 +32,11 @@ public class ItBoard_Dao extends SqlSessionDaoSupport   {
 	public ItBoard_Dto itCategoryView(int postNo) throws Exception{
 		return getSqlSession().selectOne("board.it_view",postNo);
 	}
+	
+	//IT글 조회수 변경
+    public int itViewCountUpdate(int postNo) throws Exception{
+    	return getSqlSession().update("board.itViewCnt_update",postNo);
+    }
 	
 	//IT 글 수정
 	public int itCategoryUpdate(ItBoard_Dto dto) throws Exception {

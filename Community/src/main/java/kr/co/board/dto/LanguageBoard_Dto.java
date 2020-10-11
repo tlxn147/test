@@ -2,7 +2,14 @@ package kr.co.board.dto;
 
 import java.util.Date;
 
-public class ItBoard_Dto {
+import lombok.Getter;
+import lombok.Setter;
+
+
+
+public class LanguageBoard_Dto {
+	
+	
 	private int postNo; //글번호 
     private String postTitle; //문의글제목 
     private String customerNickname; //유저닉네임 
@@ -10,10 +17,10 @@ public class ItBoard_Dto {
     private String contents; //글본문 
     private int commentsCount;  //총댓글수 
     private String postCategory;   //글분류 
-    private int customerNo; //유저번호' 
-    private int viewCount; // 조회수
-    
-	public int getPostNo() {
+    private int customerNo; //유저번호
+    private int viewCount; //조회수
+	
+    public int getPostNo() {
 		return postNo;
 	}
 	public void setPostNo(int postNo) {
@@ -67,5 +74,7 @@ public class ItBoard_Dto {
 	public void setViewCount(int viewCount) {
 		this.viewCount = viewCount;
 	}
-	
+    
+    
+
 }
