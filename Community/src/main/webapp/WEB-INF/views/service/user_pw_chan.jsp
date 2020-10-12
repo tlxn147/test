@@ -14,20 +14,25 @@
 <form action="user_pw_chan_update" id="pw_chan_submit" method="post">
 	<input type="password" id="current_pw" name="current_pw" placeholder="현재 비밀번호"><br>
 	<input type="password" id="new_pw" name="new_pw" placeholder="새 비밀번호"><br>
-	<input type="password" id="check_new_pw_" placeholder="새 비밀번호 확인"><br>
-	<input type="submit" id="submit_bt" value="확인"><br>
+	<input type="password" id="check_new_pw" placeholder="새 비밀번호 확인"><br>
+	<input type="button" id="submit_bt" value="확인"><br>
 	<input type="button" value="취소">
 </form>
 <script type="text/javascript">
 $(function() {
-	$('#submit_bt').click(function() {
-		console.log("${pw_chan}");
-		if(${pw_chan} == true) {
-			alert("비밀번호가 변경되었습니다.");
-		}
-		if(${pw_chan} == false) {
-			alert("비밀번호를 확인해주세요.");
-			history.go(-1);
+	$('#submit_bt').click(function() { 
+		var current_pw = document.getElementById('current_pw').value;
+		var new_pw = document.getElementById('new_pw').value;
+		var check_new_pw = document.getElementById('check_new_pw').value;
+		var pwRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/; // 비밀번호 유효성 검사
+		if(!pwRegExp.test(new_pw)) {
+			alert("8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
+			window.location.reload();
+		} else if(new_pw != check_new_pw) {
+			alert("새 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+			window.location.reload();
+		} else {
+			$('#pw_chan_submit').submit();
 		}
 	});
 });

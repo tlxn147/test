@@ -23,10 +23,10 @@
 		<a id="logout_user" href="/kmweb/main/logout"> 로그아웃 </a>
 	</c:when>
 	<c:otherwise>
-		<a id="login_user" href="/kmweb/main/login"> 로그인 </a>
+		<a id="login_user" href="/kmweb/main/login"> 로그인 </a><br>
+		<a href="/kmweb/main/signup"> 회원가입 </a>
 	</c:otherwise>
 </c:choose><br>
-	<a href="/kmweb/main/signup"> 회원가입 </a> <br>
 	<a href="/kmweb/board/itCategory">it</a> <br>
 	<a href="/kmweb/board/languageCategory">외국어</a> <br>
 	<a href="/kmweb/board/publicServantCategory">공무원</a> <br>

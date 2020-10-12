@@ -1,6 +1,7 @@
 package kr.co.web.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,6 +60,22 @@ public class Customer_controller {
 		return mav;
 	}
 /* 회원가입 */
+	// 암호화 메소드
+	private String encrypt(String m) {
+		// Jasypt 설정으로 DB 정보 암호화
+		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+		encryptor.setPassword("somePassword");
+		encryptor.setAlgorithm("PBEWithMD5AndDES");
+		return encryptor.encrypt(m);
+	}
+	// 복호화 메소드
+	private String decrypt(String m) {
+		// Jasypt 설정으로 DB 정보 암호화
+		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+		encryptor.setPassword("somePassword");
+		encryptor.setAlgorithm("PBEWithMD5AndDES");
+		return encryptor.decrypt(m);
+	}
 	// 관심사 list로 사용할 메소드
 	private void referenceData(Model m) {
 		String[] interest = { "게임", "웹툰", "연예", "기타" };
@@ -74,10 +91,7 @@ public class Customer_controller {
 	@RequestMapping(value = "success_signup", method = RequestMethod.POST)
 	public String success_signup(Customer_dto dto) throws Exception {
 		// Jasypt 설정으로 DB 정보 암호화
-		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-		encryptor.setPassword("somePassword");
-		encryptor.setAlgorithm("PBEWithMD5AndDES");
-		String encStr = encryptor.encrypt(dto.getCustomerPW()); // 비밀번호 암호화
+		String encStr = encrypt(dto.getCustomerPW()); // 비밀번호 암호화
 		dto.setCustomerPW(encStr);
 		ms.main_signup(dto);
 		return "main";
@@ -105,17 +119,14 @@ public class Customer_controller {
 	@RequestMapping(value="user_login_chk")
 	public String main_login_user(HttpSession session,
 			String customerId, String customerPW) throws Exception {
-		// Jasypt 설정으로 DB 정보 암호화
-		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
 		if(session.getAttribute("login") !=null) {
-			session.removeAttribute("login");
+	 	      session.invalidate();
 	    } // 로그인 세션 연결 해제
 		try {
-			String user_id = ms.main_login_user_id(customerId);
-			Customer_dto list = ms.main_login_user(user_id);
-			encryptor.setPassword("somePassword");
-			encryptor.setAlgorithm("PBEWithMD5AndDES");
-			String decStr = encryptor.decrypt(list.getCustomerPW()); // 비밀번호 복호화
+			String user_id = ms.main_login_user_id(customerId); // 입력한 id로 db 검색
+			Customer_dto list = ms.main_login_user(user_id); // 입력한 아이디로 db list 저장
+			String decStr = decrypt(list.getCustomerPW()); // id와 pw가 매칭되면 비밀번호 복호화
+			System.out.println(decStr);
 			if(decStr.equals(customerPW)) {
 				session.setAttribute("login", list);
 				return "main";
@@ -124,7 +135,7 @@ public class Customer_controller {
 				return "service/login";
 			}
 		} catch (Exception e) {
-			session.setAttribute("fail", "null");
+			session.setAttribute("fail", "null"); // fail이라는 세션으로 null을 보낸다.
 		}
 		return "service/login";
 	}
@@ -132,7 +143,7 @@ public class Customer_controller {
 	@RequestMapping(value = "kakaologin", method = { RequestMethod.GET, RequestMethod.POST })
 	public String kakaoLogin(@RequestParam("code") String code, Customer_dto list,
 			HttpServletResponse response, HttpSession session) throws Exception {
-		if(session.getAttribute("login") !=null) {
+		if(session.getAttribute("login") != null) {
 			session.removeAttribute("login");
 	    } // 로그인 세션 연결 해제
 		JsonNode node = KakaoController.getAccessToken(code); // accessToken에 사용자의 로그인한 모든 정보가 들어있다.
@@ -197,45 +208,39 @@ public class Customer_controller {
  	}
  	// 비밀번호 변경
   	@RequestMapping(value="user_pw_chan_update",  method = { RequestMethod.GET, RequestMethod.POST })
-    public String user_pw_chan_update(HttpSession session, String current_pw, String new_pw) {
+    public String user_pw_chan_update(HttpSession session, String current_pw, String new_pw, HttpServletResponse response_equals) {
   		if(session.getAttribute("login") == null) {
  			return "service/login";
  	    } else {
 			try {
-		 	    // Jasypt 설정으로 DB 정보 암호화
-				StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
 				// 현재 비밀번호 입력
 				Customer_dto list = ms.main_login_user(((Customer_dto) session.getAttribute("login")).getCustomerId());
-				encryptor.setPassword("somePassword");
-				encryptor.setAlgorithm("PBEWithMD5AndDES");
-				String current_pw_db = encryptor.decrypt(list.getCustomerPW()); // db 암호화된 비밀번호 복호화 후 가져옴
-				System.out.println("db에 저장된 비밀번호 : " + current_pw_db);
-				System.out.println("입력한 비밀번호 : " + current_pw);
-				if(current_pw_db.equals(current_pw)) {
-					StandardPBEStringEncryptor encrypt = new StandardPBEStringEncryptor();
-				 	System.out.println(new_pw);
-					// 변경 할 비밀번호 입력
-				 	encrypt.setPassword("somePassword");
-				 	encrypt.setAlgorithm("PBEWithMD5AndDES");
-				 	System.out.println(new_pw);
-					String encryptPW = encrypt.encrypt(new_pw); // 비밀번호 암호화
-				 	System.out.println(new_pw);
+				String current_pw_db = decrypt(list.getCustomerPW()); // db 암호화된 비밀번호 복호화 후 가져옴
+				boolean bool = current_pw_db.equals(current_pw);
+				response_equals.setContentType("text/html; charset=UTF-8");
+				if(bool == true) {
+					String encryptPW = encrypt(new_pw); // 비밀번호 암호화
 				 	ms.user_pw_chan(list.getCustomerId(), encryptPW);
 					// 비밀번호가 변경 되었을 경우
-			        session.setAttribute("pw_chan", true);
+			        session.setAttribute("pw_chan", bool);
 			 		return "service/details";
-				} else {
-					System.out.println("1번");
-					// 비밀번호가 틀렸을 경우
-			        session.setAttribute("pw_chan", false);
+				}
+				if(bool == false) {
+					PrintWriter out_equals = response_equals.getWriter();
+					out_equals.println("<script>"
+									 + "alert('비밀번호를 확인해주세요.');"
+									 + "history.back();"
+									 + "</script>");
+					out_equals.flush();
+			        session.setAttribute("pw_chan", bool);
 					return "service/user_pw_chan";
 				}
 			} catch (Exception e) {
-				System.out.println("2번" );
 				// 비밀번호가 틀렸을 경우
 		        session.setAttribute("pw_chan", false);
 				return "service/user_pw_chan";
 			}
+			return "service/user_pw_chan";
  	    }
   	}
 }
