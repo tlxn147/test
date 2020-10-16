@@ -45,9 +45,7 @@ public class BoardController {
 		page.setKeyword(keyword); //검색어
 		
         List<ItBoard_Dto> list = service.getItCategoryList(page.getDisplayPost(),page.getPostNum(), searchType, keyword);
-		
 		model.addAttribute("itList", list);
-		
 		model.addAttribute("page",page);
 		model.addAttribute("select", num);
 								
@@ -57,18 +55,13 @@ public class BoardController {
 	//it글쓰기 페이지로 이동
 	@RequestMapping(value="/itCategoryWrite", method = RequestMethod.GET) 
 	public String getItCategoryWrite(HttpSession session, HttpServletResponse response) throws Exception{
-		
 		if(session.getAttribute("login") == null) {
-			
 			response.setContentType("text/html; charset=UTF-8");
             PrintWriter out = response.getWriter();
             out.println("<script>alert('로그인이 필요한 서비스입니다.'); </script>");
             out.flush();
-           
 			return "service/login";
-					
 		}
-		
 		return "board/write/it-write";
 	}
 	
@@ -86,30 +79,21 @@ public class BoardController {
 	//it 글 조회 페이지 이동
 	@RequestMapping(value="/itCategoryView",method = RequestMethod.GET)
 	public String itCategoryView(@RequestParam("postNo") int postNo, Model model) throws Exception{
-		
 		service.itViewCountUpdate(postNo); //글 조회 수 추가되는 메소드
-		
 		ItBoard_Dto dto = service.itCategoryView(postNo);
-		
 		model.addAttribute("view", dto);
-		
 		//해당 글 댓글 조회
 		List<ItBoardReply_Dto> reply = null;
 		reply = service.itReplyList(postNo);
-		
 		model.addAttribute("comment",reply);
-		
 		return "board/view/it-view";
 	}
 	
 	//it 글 수정 페이지 이동
 	@RequestMapping(value="/itCategoryUpdate",method = RequestMethod.GET)
 	public String getItCategoryModify(@RequestParam("postNo") int postNo, Model model) throws Exception{
-		
 		ItBoard_Dto dto = service.itCategoryView(postNo);
-		
 		model.addAttribute("view", dto);
-		
 		return "board/update/it-update";
 	}
 	
@@ -118,18 +102,14 @@ public class BoardController {
 	public String itCategoryUpdate(ItBoard_Dto dto) throws Exception{
 		Date currentTime =new Date();
 		dto.setPostDate(currentTime);
-		
 		service.itCategoryUpdate(dto);
-		
 		return "redirect:/board/itCategoryView?postNo="+dto.getPostNo();
 	}
 	
 	//it 글 삭제
 	@RequestMapping(value="/itCategoryDelete", method = RequestMethod.GET)
 	public String itCategoryDelete(@RequestParam("postNo") int postNo) throws Exception {
-		
 		service.itCategoryDelete(postNo);
-		
 		return "redirect:/board/itCategory";
 	}
 	
@@ -137,28 +117,20 @@ public class BoardController {
 	@RequestMapping(value="/itCommentReply", method = RequestMethod.POST )
 	public String itReplyWrite(ItBoardReply_Dto dto) throws Exception{
 		Date currentTime =new Date();
-		dto.setPostDate(currentTime);
-	    				
+		dto.setPostDate(currentTime);	
 		service.itReplyWrite(dto);
-		
 		int postNo = dto.getPostNo();
 		int commentsCount = service.itReplyCount(postNo);//댓글 테이블 몇개인지 알아내는 기능
-		
 		service.itCommentsCountUpdate(postNo, commentsCount); //댓글 갯수 수정
-		
 		return "redirect:/board/itCategoryView?postNo="+dto.getPostNo();
 	}
 	
 	//it글 댓글 삭제
 	@RequestMapping(value="/itCommentDelete", method= RequestMethod.GET)
 	public String itReplyDelete(@RequestParam("postNo") int postNo, @RequestParam("commentsNo") int commentsNo) throws Exception {
-		
 		service.itReplyDelete(postNo, commentsNo);
-		
         int commentsCount = service.itReplyCount(postNo);//댓글 테이블 몇개인지 알아내는 기능
 		service.itCommentsCountUpdate(postNo, commentsCount); //댓글 갯수 수정
-		
-		
 		return "redirect:/board/itCategoryView?postNo="+postNo;
 	}
 	

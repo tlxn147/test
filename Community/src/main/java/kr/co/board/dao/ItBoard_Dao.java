@@ -12,14 +12,11 @@ public class ItBoard_Dao extends SqlSessionDaoSupport   {
 
 	//IT게시판 list출력 + 페이징 +검색
 	public List<ItBoard_Dto> getItCategoryList(int displayPost, int postNum, String searchType, String keyword) throws Exception {
-		
 		HashMap<String, Object> data = new HashMap<String, Object>();
-		
 		data.put("displayPost",displayPost);
 		data.put("postNum",postNum);
 		data.put("searchType", searchType);
 		data.put("keyword", keyword);
-		
 		return getSqlSession().selectList("board.it_board",data);
 	}
 	
@@ -69,5 +66,4 @@ public class ItBoard_Dao extends SqlSessionDaoSupport   {
 		
 	}
 	
-
 }

@@ -221,6 +221,11 @@ public class Customer_controller {
 				if(bool == true) {
 					String encryptPW = encrypt(new_pw); // 비밀번호 암호화
 				 	ms.user_pw_chan(list.getCustomerId(), encryptPW);
+				 	PrintWriter out_equals = response_equals.getWriter();
+					out_equals.println("<script>"
+									 + "alert('비밀번호가 변경되었습니다.');"
+									 + "</script>");
+					out_equals.flush();
 					// 비밀번호가 변경 되었을 경우
 			        session.setAttribute("pw_chan", bool);
 			 		return "service/details";
