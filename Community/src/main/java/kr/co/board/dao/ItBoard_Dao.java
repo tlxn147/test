@@ -66,4 +66,8 @@ public class ItBoard_Dao extends SqlSessionDaoSupport   {
 		
 	}
 	
+	//Main페이지에 보여줄 최근 it게시글 10개 조회
+	public List<ItBoard_Dto> getMainItCategory() throws Exception {
+		return getSqlSession().selectList("board.it_mainPage");
+	}
 }

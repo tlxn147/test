@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 
+import kr.co.board.dto.ItBoard_Dto;
 import kr.co.board.dto.LanguageBoard_Dto;
 
 public class LanguageBoard_Dao extends SqlSessionDaoSupport   {
@@ -68,6 +69,11 @@ public class LanguageBoard_Dao extends SqlSessionDaoSupport   {
 		return getSqlSession().update("board.language_commentsCount_update",data);
 		
 	}
+	
+	//Main페이지에 보여줄 최근 language게시글 10개 조회
+		public List<LanguageBoard_Dto> getMainLanguageCategory() throws Exception {
+			return getSqlSession().selectList("board.language_mainPage");
+		}
 	
 
 }

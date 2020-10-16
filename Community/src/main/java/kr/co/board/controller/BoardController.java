@@ -24,12 +24,11 @@ import kr.co.boardReply.dto.LanguageBoardReply_Dto;
 import lombok.Setter;
 
 @Controller
-@RequestMapping("board")
 public class BoardController {
 	@Setter
 	@Autowired
-	BoardService service;
-			
+	BoardService service;	
+	
 	//ITCategory 게시판 +페이징
 	@RequestMapping(value="/itCategory", method=RequestMethod.GET) 
 	public String getItCategoryList(
@@ -49,7 +48,7 @@ public class BoardController {
 		model.addAttribute("page",page);
 		model.addAttribute("select", num);
 								
-		return "board/list/it-list";
+		return "/board/list/it-list";
 	}
 	
 	//it글쓰기 페이지로 이동
@@ -62,7 +61,7 @@ public class BoardController {
             out.flush();
 			return "service/login";
 		}
-		return "board/write/it-write";
+		return "/board/write/it-write";
 	}
 	
 	//it글쓰기
@@ -86,7 +85,7 @@ public class BoardController {
 		List<ItBoardReply_Dto> reply = null;
 		reply = service.itReplyList(postNo);
 		model.addAttribute("comment",reply);
-		return "board/view/it-view";
+		return "/board/view/it-view";
 	}
 	
 	//it 글 수정 페이지 이동
@@ -94,7 +93,7 @@ public class BoardController {
 	public String getItCategoryModify(@RequestParam("postNo") int postNo, Model model) throws Exception{
 		ItBoard_Dto dto = service.itCategoryView(postNo);
 		model.addAttribute("view", dto);
-		return "board/update/it-update";
+		return "/board/update/it-update";
 	}
 	
 	//it 글 수정
@@ -122,8 +121,19 @@ public class BoardController {
 		int postNo = dto.getPostNo();
 		int commentsCount = service.itReplyCount(postNo);//댓글 테이블 몇개인지 알아내는 기능
 		service.itCommentsCountUpdate(postNo, commentsCount); //댓글 갯수 수정
-		return "redirect:/board/itCategoryView?postNo="+dto.getPostNo();
+		return "redirect:/itCategoryView?postNo="+dto.getPostNo();
 	}
+	
+	//it글 댓글 수정
+    @RequestMapping(value="/itCommentUpdate", method=RequestMethod.POST)
+    public String languageReplyUpdate(ItBoardReply_Dto dto) throws Exception {
+    	Date currentTime = new Date();
+    	dto.setPostDate(currentTime);
+    	
+    	service.itReplyUpdate(dto);
+    	 
+    	 return "redirect:/itCategoryView?postNo="+dto.getPostNo(); 
+    }
 	
 	//it글 댓글 삭제
 	@RequestMapping(value="/itCommentDelete", method= RequestMethod.GET)
@@ -131,29 +141,23 @@ public class BoardController {
 		service.itReplyDelete(postNo, commentsNo);
         int commentsCount = service.itReplyCount(postNo);//댓글 테이블 몇개인지 알아내는 기능
 		service.itCommentsCountUpdate(postNo, commentsCount); //댓글 갯수 수정
-		return "redirect:/board/itCategoryView?postNo="+postNo;
+		return "redirect:/itCategoryView?postNo="+postNo;
 	}
 	
 	//-------------------------------------------------------------------------------------------------------------------------
 	
 	//languageCategory 게시판 +페이징
 		@RequestMapping(value="/languageCategory", method=RequestMethod.GET) 
-		public String getLanguageCategoryList(
-			Model model, @RequestParam(defaultValue="1") int num,
-			@RequestParam(value="searchType", required= false, defaultValue = "postTitle") String searchType,
-			@RequestParam(value="keyword", required = false, defaultValue="") String keyword
-			) throws Exception {
+		public String getLanguageCategoryList(Model model, @RequestParam(defaultValue="1") int num,
+				@RequestParam(value="searchType", required= false, defaultValue = "postTitle") String searchType,
+				@RequestParam(value="keyword", required = false, defaultValue="") String keyword) throws Exception {
 			Page page = new Page();
-			
 			page.setNum(num);
 			page.setCount(service.languageCategoryCount(searchType,keyword));  //게시물 총갯수 + 검색기능 
 			page.setSearchType(searchType); //검색 타입 
 			page.setKeyword(keyword); //검색어
-			
 	        List<LanguageBoard_Dto> list = service.getLanguageCategoryList(page.getDisplayPost(),page.getPostNum(), searchType, keyword);
-			
 			model.addAttribute("languageList", list);
-			
 			model.addAttribute("page",page);
 			model.addAttribute("select", num);
 									
@@ -163,18 +167,13 @@ public class BoardController {
 		//language글쓰기 페이지로 이동
 		@RequestMapping(value="/languageCategoryWrite", method = RequestMethod.GET) 
 		public String getLanguageCategoryWrite(HttpSession session, HttpServletResponse response) throws Exception{
-			
 			if(session.getAttribute("login") == null) { 
-				
 				response.setContentType("text/html; charset=UTF-8");
 	            PrintWriter out = response.getWriter();
 	            out.println("<script>alert('로그인이 필요한 서비스입니다.'); </script>");
 	            out.flush();
-	           
 				return "service/login";
-						
 			}
-					
 			return "board/write/language-write";
 		}
 		
@@ -255,7 +254,19 @@ public class BoardController {
 			return "redirect:/board/languageCategoryView?postNo="+dto.getPostNo();
 		}
 		
-		//it글 댓글 삭제
+		//language글 댓글 수정
+        @RequestMapping(value="/languageCommentUpdate", method=RequestMethod.POST)
+        public String languageReplyUpdate(LanguageBoardReply_Dto dto) throws Exception {
+        	Date currentTime =new Date();
+			dto.setPostDate(currentTime);
+			
+        	service.languageReplyUpdate(dto);
+        	 
+        	 return "redirect:/board/languageCategoryView?postNo="+dto.getPostNo(); 
+        }
+		
+		
+		//language글 댓글 삭제
 		@RequestMapping(value="/languageCommentDelete", method= RequestMethod.GET)
 		public String languageReplyDelete(@RequestParam("postNo") int postNo, @RequestParam("commentsNo") int commentsNo) throws Exception {
 			

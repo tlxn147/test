@@ -1,5 +1,6 @@
 package kr.co.board.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,12 @@ public class BoardService {
 		return itDao.itCommentsCountUpdate(postNo, commentsCount);
 	}
 	
+	//Main페이지에 보여줄 최근 it게시글 10개 조회
+  	public List<ItBoard_Dto> getMainItCategory() throws Exception{
+  		return itDao.getMainItCategory();
+  	}
+	
+  	
 	//IT댓글 조회
     public List<ItBoardReply_Dto> itReplyList(int postNo) throws Exception{
     	return itReplyDao.itReplyList(postNo);
@@ -100,6 +107,8 @@ public class BoardService {
   	public int itReplyCount(int postNo) throws Exception {
   		return itReplyDao.itReplyCount(postNo);
   	}
+  	
+    
   	
   //--------------------------------------------------------------------------------------------------------------------------
   	
@@ -144,6 +153,11 @@ public class BoardService {
   		public int languageCommentsCountUpdate(int postNo, int commentsCount) throws Exception{
   			return languageDao.languageCommentsCountUpdate(postNo, commentsCount);
   		}
+  		
+  	    //Main페이지에 보여줄 최근 language게시글 10개 조회
+  	  	public List<LanguageBoard_Dto> getMainLanguageCategory() throws Exception{
+  	  		return languageDao.getMainLanguageCategory();
+  	  	}
   		
   		//Language댓글 조회
   	    public List<LanguageBoardReply_Dto> languageReplyList(int postNo) throws Exception{

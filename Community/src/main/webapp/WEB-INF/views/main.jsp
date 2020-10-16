@@ -32,5 +32,35 @@
 	<a href="/kmweb/board/publicServantCategory">공무원</a> <br>
 	<a href="/kmweb/board/certificateCategory">자격증</a> <br>
 	<a href="/kmweb/board/etcCategory">기타</a> <br>
+
+
+
+
+<p>IT</p>	
+<table>
+<c:forEach items="${itPost}" var="itPost">
+<tr>
+  <td><a href="/kmweb/board/itCategoryView?postNo=${itPost.postNo}">${itPost.postTitle}</a></td>
+  <td>${itPost.customerNickname}</td>
+  <td>${itPost.viewCount}명 봄</td>
+  <td>${itPost.postDateStr}</td>
+</tr>
+</c:forEach>
+</table><br>
+<br>
+<br>
+
+<p>외국어</p>
+<table>
+<c:forEach items="${languagePost}" var="languagePost">
+<tr>
+  <td><a href="/kmweb/board/languageCategoryView?postNo=${languagePost.postNo}">${languagePost.postTitle}</a></td>
+  <td>${languagePost.customerNickname}</td>
+  <td>${languagePost.viewCount}명 봄</td>
+  <td>${languagePost.postDateStr}</td>
+</tr>
+</c:forEach>
+</table><br/>
+
 </body>
 </html>

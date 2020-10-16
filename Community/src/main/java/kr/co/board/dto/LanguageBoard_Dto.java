@@ -19,8 +19,15 @@ public class LanguageBoard_Dto {
     private String postCategory;   //글분류 
     private int customerNo; //유저번호
     private int viewCount; //조회수
-	
-    public int getPostNo() {
+	private String postDateStr;
+    
+    public String getPostDateStr() {
+		return postDateStr;
+	}
+	public void setPostDateStr(String postDateStr) {
+		this.postDateStr = postDateStr;
+	}
+	public int getPostNo() {
 		return postNo;
 	}
 	public void setPostNo(int postNo) {
