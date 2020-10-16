@@ -111,7 +111,14 @@ where postNo =#{postNo}
 
 </update>
 
-<!-- ============================================================================================================== -->
+<!-- Main페이지에 보여줄 최근 it게시글 10개 조회 SQL문 -->
+<select id ="it_mainPage" resultType = "kr.co.board.dto.ItBoard_Dto">
+
+select * from it_category order by postNo desc limit 10 
+
+</select>
+
+<!-- ==================================================================================================================== -->
 
 <!-- language게시판 리스트 +페이징+검색 -->
 	<select id ="language_board" parameterType ="hashMap" resultType = "kr.co.board.dto.LanguageBoard_Dto"> 
@@ -209,7 +216,7 @@ where postNo =#{postNo}
 	Delete from language_Category where postNo = #{postNo}
 
 	</delete>
-
+    
 	<!-- language게시판 답글 갯수 수정 -->
 	<update id ="language_commentsCount_update" parameterType="hashMap">
 
@@ -218,5 +225,12 @@ where postNo =#{postNo}
 	where postNo =#{postNo}
 
 	</update>
+	
+	<!--Main페이지에 보여줄 최근 language 게시글 10개 조회 SQL문  -->
+	
+	<select id = "language_mainPage" resultType = "kr.co.board.dto.LanguageBoard_Dto">
+	
+	select * from language_category order by postNo desc limit 10
+	</select>
 
 </mapper>

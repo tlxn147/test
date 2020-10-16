@@ -2,6 +2,9 @@ package kr.co.web.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +26,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 
+import kr.co.board.dto.ItBoard_Dto;
+import kr.co.board.dto.LanguageBoard_Dto;
+import kr.co.board.service.BoardService;
+import kr.co.board.utils.CalculateTime;
 import kr.co.kakao.KakaoController;
 import kr.co.naver.NaverLoginBO;
 import kr.co.web.dto.Customer_dto;
@@ -38,10 +45,35 @@ public class Customer_controller {
 	@Autowired
     private NaverLoginBO naverLoginBO;
     private String apiResult = null;
+    @Setter
+    @Autowired
+    private BoardService bs;
 	
 	// 메인화면 이동
 	@RequestMapping("main")
-	public String main() throws Exception {
+	public String main(Model model) throws Exception {
+		
+		CalculateTime ct = new CalculateTime();
+		
+		List<ItBoard_Dto> itPost = bs.getMainItCategory();
+		for(ItBoard_Dto dto : itPost) {
+			Date date = dto.getPostDate();
+			String postDate = ct.calculateTime(date);
+			dto.setPostDateStr(postDate);
+			
+		}
+		
+		List<LanguageBoard_Dto> languagePost = bs.getMainLanguageCategory(); 
+		for(LanguageBoard_Dto dto : languagePost) {
+			Date date = dto.getPostDate();
+			String postDate = ct.calculateTime(date);
+			dto.setPostDateStr(postDate);
+		}
+		
+		model.addAttribute("itPost", itPost);
+		model.addAttribute("languagePost", languagePost);
+		
+		
 		return "main";
 	}
 	// 로그인

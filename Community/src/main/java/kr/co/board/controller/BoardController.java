@@ -28,8 +28,8 @@ import lombok.Setter;
 public class BoardController {
 	@Setter
 	@Autowired
-	BoardService service;
-			
+	BoardService service;	
+	
 	//ITCategory 게시판 +페이징
 	@RequestMapping(value="/itCategory", method=RequestMethod.GET) 
 	public String getItCategoryList(
@@ -148,6 +148,17 @@ public class BoardController {
 		
 		return "redirect:/board/itCategoryView?postNo="+dto.getPostNo();
 	}
+	
+	//it글 댓글 수정
+    @RequestMapping(value="/itCommentUpdate", method=RequestMethod.POST)
+    public String languageReplyUpdate(ItBoardReply_Dto dto) throws Exception {
+    	Date currentTime = new Date();
+    	dto.setPostDate(currentTime);
+    	
+    	service.itReplyUpdate(dto);
+    	 
+    	 return "redirect:/board/itCategoryView?postNo="+dto.getPostNo(); 
+    }
 	
 	//it글 댓글 삭제
 	@RequestMapping(value="/itCommentDelete", method= RequestMethod.GET)
@@ -283,7 +294,19 @@ public class BoardController {
 			return "redirect:/board/languageCategoryView?postNo="+dto.getPostNo();
 		}
 		
-		//it글 댓글 삭제
+		//language글 댓글 수정
+        @RequestMapping(value="/languageCommentUpdate", method=RequestMethod.POST)
+        public String languageReplyUpdate(LanguageBoardReply_Dto dto) throws Exception {
+        	Date currentTime =new Date();
+			dto.setPostDate(currentTime);
+			
+        	service.languageReplyUpdate(dto);
+        	 
+        	 return "redirect:/board/languageCategoryView?postNo="+dto.getPostNo(); 
+        }
+		
+		
+		//language글 댓글 삭제
 		@RequestMapping(value="/languageCommentDelete", method= RequestMethod.GET)
 		public String languageReplyDelete(@RequestParam("postNo") int postNo, @RequestParam("commentsNo") int commentsNo) throws Exception {
 			
