@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +29,8 @@ public class UserController {
 	Customer_service ms;
 
 	@RequestMapping("email_Authentication")
-	public String main() throws Exception {
+	public String main(String email_sub, Model m) throws Exception {
+		m.addAttribute("email", email_sub);
 		return "/service/email_Authentication/email_Authentication_main";
 	}
 
