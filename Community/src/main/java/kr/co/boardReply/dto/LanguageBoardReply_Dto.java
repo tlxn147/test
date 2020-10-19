@@ -2,7 +2,13 @@ package kr.co.boardReply.dto;
 
 import java.util.Date;
 
-public class ItBoardReply_Dto {
+import lombok.Getter;
+import lombok.Setter;
+
+
+
+public class LanguageBoardReply_Dto {
+	
 	private int commentsNo; //댓글 번호
 	private int postNo; //댓글 다는 글 번호
 	private String customerNickname; //댓글 작성자
@@ -46,4 +52,7 @@ public class ItBoardReply_Dto {
 	public void setPostDate(Date postDate) {
 		this.postDate = postDate;
 	}
+	
+	
+
 }

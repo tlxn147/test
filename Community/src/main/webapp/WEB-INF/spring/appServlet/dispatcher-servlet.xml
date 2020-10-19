@@ -64,5 +64,9 @@
 		<bean id="itBoard_Dao" class="kr.co.board.dao.ItBoard_Dao"
 	    p:sqlSessionFactory-ref="sqlSessionFactory" />
 	<bean id="itBoardReply_Dao" class="kr.co.boardReply.dao.ItBoardReply_Dao" 
-	    p:sqlSessionFactory-ref="sqlSessionFactory" />   
+	    p:sqlSessionFactory-ref="sqlSessionFactory" />
+	    <bean id="languageBoard_Dao" class="kr.co.board.dao.LanguageBoard_Dao"
+	    p:sqlSessionFactory-ref="sqlSessionFactory" />
+	<bean id="languageBoardReply_Dao" class="kr.co.boardReply.dao.LanguageBoardReply_Dao" 
+	    p:sqlSessionFactory-ref="sqlSessionFactory" />    
 </beans>

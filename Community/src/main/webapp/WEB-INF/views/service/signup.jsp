@@ -271,7 +271,6 @@
 		            $('#pop').css("display", "block");
 		            $('#pop').html(data);
 				}
-	            
 	        }).fail(function(e) {
 	        alert(e.responseText);
 	    })

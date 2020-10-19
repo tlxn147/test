@@ -23,14 +23,44 @@
 		<a id="logout_user" href="/kmweb/main/logout"> 로그아웃 </a>
 	</c:when>
 	<c:otherwise>
-		<a id="login_user" href="/kmweb/main/login"> 로그인 </a>
+		<a id="login_user" href="/kmweb/main/login"> 로그인 </a><br>
+		<a href="/kmweb/main/signup"> 회원가입 </a>
 	</c:otherwise>
 </c:choose><br>
-	<a href="/kmweb/main/signup"> 회원가입 </a> <br>
 	<a href="/kmweb/board/itCategory">it</a> <br>
 	<a href="/kmweb/board/languageCategory">외국어</a> <br>
 	<a href="/kmweb/board/publicServantCategory">공무원</a> <br>
 	<a href="/kmweb/board/certificateCategory">자격증</a> <br>
 	<a href="/kmweb/board/etcCategory">기타</a> <br>
+
+
+
+
+<p>IT</p>	
+<table>
+<c:forEach items="${itPost}" var="itPost">
+<tr>
+  <td><a href="/kmweb/board/itCategoryView?postNo=${itPost.postNo}">${itPost.postTitle}</a></td>
+  <td>${itPost.customerNickname}</td>
+  <td>${itPost.viewCount}명 봄</td>
+  <td>${itPost.postDateStr}</td>
+</tr>
+</c:forEach>
+</table><br>
+<br>
+<br>
+
+<p>외국어</p>
+<table>
+<c:forEach items="${languagePost}" var="languagePost">
+<tr>
+  <td><a href="/kmweb/board/languageCategoryView?postNo=${languagePost.postNo}">${languagePost.postTitle}</a></td>
+  <td>${languagePost.customerNickname}</td>
+  <td>${languagePost.viewCount}명 봄</td>
+  <td>${languagePost.postDateStr}</td>
+</tr>
+</c:forEach>
+</table><br/>
+
 </body>
 </html>

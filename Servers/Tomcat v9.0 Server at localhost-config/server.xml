@@ -153,7 +153,11 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
+<<<<<<< HEAD
       <Context docBase="Community" path="/kmweb" reloadable="true" source="org.eclipse.jst.jee.server:Community"/><Context docBase="University" path="/mvc" reloadable="true" source="org.eclipse.jst.jee.server:University"/></Host>
+=======
+      <Context docBase="Community" path="/kmweb" reloadable="true" source="org.eclipse.jst.jee.server:Community"/></Host>
+>>>>>>> branch 'master' of https://github.com/tlxn147/test.git
     </Engine>
   </Service>
 </Server>

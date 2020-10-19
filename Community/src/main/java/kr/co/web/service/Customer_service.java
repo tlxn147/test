@@ -1,5 +1,8 @@
 package kr.co.web.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +52,12 @@ public class Customer_service {
 	// 로그인 비밀번호 검사 및 로그인 정보
 	public Customer_dto main_login_user(String customerId) {
 		return ld.main_login_user(customerId);
+	}
+	// 비밀번호 변경
+	public int user_pw_chan(String customerId, String new_pw) {
+		Map<String, Object> m = new HashMap<String, Object>();
+		m.put("customerId", customerId);
+		m.put("customerPW", new_pw);
+		return ld.user_pw_chan(m);
 	}
 }

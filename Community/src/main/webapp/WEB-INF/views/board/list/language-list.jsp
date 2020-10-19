@@ -5,10 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>it_category</title>
+<title>language_category</title>
 </head>
 <body>
-	<h4>IT 게시판</h4>
+	<h4>외국어 게시판</h4>
 	<table>
 		<thead>
 			<tr>
@@ -19,15 +19,16 @@
 				<th>작성일</th>
 				<th>조회수</th>
 				<th>총댓글수</th>
+
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${itList}" var="list">
+			<c:forEach items="${languageList}" var="list">
 				<fmt:formatDate var="time" value="${list.postDate}" pattern="yyyy.MM.dd" />
 				<tr>
 					<td>${list.postNo}</td>
 					<td>${list.postCategory}</td>
-					<td><a href="/kmweb/board/itCategoryView?postNo=${list.postNo}">${list.postTitle}</a></td>
+					<td><a href="/kmweb/board/languageCategoryView?postNo=${list.postNo}">${list.postTitle}</a></td>
 					<td>${list.customerNickname}</td>
 					<td>${time}</td>
 					<td>${list.viewCount}</td>
@@ -38,24 +39,29 @@
 	</table>
 	<div>
 		<c:if test="${page.prev}">
-			<span>[<a href="/kmweb/board/itCategory?num=${page.startPageNum - 1}${page.searchTypeKeyword}">이전</a>]
+			<span>[<a href="/kmweb/board/languageCategory?num=${page.startPageNum - 1}${page.searchTypeKeyword}">이전</a>]
 			</span>
 		</c:if>
+
 		<c:forEach begin="${page.startPageNum}" end="${page.endPageNum}"
 			var="num">
 			<span> <c:if test="${select != num}">
-					<a href="/kmweb/board/itCategory?num=${num}${page.searchTypeKeyword}">${num}</a>
+					<a href="/kmweb/board/languageCategory?num=${num}${page.searchTypeKeyword}">${num}</a>
 				</c:if> <c:if test="${select == num}">
 					<b>${num}</b>
 				</c:if>
 			</span>
 		</c:forEach>
+
 		<c:if test="${page.next}">
-			<span>[<a href="/kmweb/board/itCategory?num=${page.endPageNum + 1}${page.searchTypeKeyword}">다음</a>]
+			<span>[ <a
+				href="/kmweb/board/languageCategory?num=${page.endPageNum + 1}${page.searchTypeKeyword}">다음</a>
+				]
 			</span>
 		</c:if>
 	</div>
-	<button type="button" onclick="location.href='/kmweb/board/itCategoryWrite'">글쓰기</button>
+	<button type="button"
+		onclick="location.href='/kmweb/board/languageCategoryWrite'">글쓰기</button>
 	<br />
 	<div>
 		<select name="searchType">
@@ -71,12 +77,15 @@
 		<input type="text" name="keyword" value="${page.keyword}" />
 		<button type="button" id="searchBtn">검색</button>
 	</div>
+
 	<script>
 		document.getElementById("searchBtn").onclick = function() {
 			let searchType = document.getElementsByName("searchType")[0].value;
 			let keyword = document.getElementsByName("keyword")[0].value;
-			location.href = "/kmweb/board/itCategory?" + "searchType=" + searchType + "&keyword=" + keyword;
+			location.href = "/kmweb/board/languageCategory?" + "searchType="
+					+ searchType + "&keyword=" + keyword;
 		};
 	</script>
+
 </body>
 </html>

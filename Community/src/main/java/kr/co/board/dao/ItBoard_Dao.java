@@ -1,6 +1,7 @@
 package kr.co.board.dao;
 
 import java.util.HashMap;
+
 import java.util.List;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -11,14 +12,11 @@ public class ItBoard_Dao extends SqlSessionDaoSupport   {
 
 	//IT게시판 list출력 + 페이징 +검색
 	public List<ItBoard_Dto> getItCategoryList(int displayPost, int postNum, String searchType, String keyword) throws Exception {
-		
 		HashMap<String, Object> data = new HashMap<String, Object>();
-		
 		data.put("displayPost",displayPost);
 		data.put("postNum",postNum);
 		data.put("searchType", searchType);
 		data.put("keyword", keyword);
-		
 		return getSqlSession().selectList("board.it_board",data);
 	}
 	
@@ -31,6 +29,11 @@ public class ItBoard_Dao extends SqlSessionDaoSupport   {
 	public ItBoard_Dto itCategoryView(int postNo) throws Exception{
 		return getSqlSession().selectOne("board.it_view",postNo);
 	}
+	
+	//IT글 조회수 변경
+    public int itViewCountUpdate(int postNo) throws Exception{
+    	return getSqlSession().update("board.itViewCnt_update",postNo);
+    }
 	
 	//IT 글 수정
 	public int itCategoryUpdate(ItBoard_Dto dto) throws Exception {
@@ -63,5 +66,8 @@ public class ItBoard_Dao extends SqlSessionDaoSupport   {
 		
 	}
 	
-
+	//Main페이지에 보여줄 최근 it게시글 10개 조회
+	public List<ItBoard_Dto> getMainItCategory() throws Exception {
+		return getSqlSession().selectList("board.it_mainPage");
+	}
 }

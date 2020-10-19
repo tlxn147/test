@@ -57,7 +57,6 @@ $(function() {
 		pw_login_chk.innerHTML='가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.';
 	}
 	$('#login_chk').click(function() {
-		console.log();
 		var id_login = document.getElementById('id_login').value;
 		var pw_login = document.getElementById('pw_login').value;
 		var id_login_chk = document.getElementById('id_login_chk');

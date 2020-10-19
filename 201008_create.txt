@@ -1,0 +1,219 @@
+-- DROP DATABASE kmweb;
+CREATE DATABASE kmweb;
+
+USE kmweb;
+-- Customer_SignUp Table Create SQL
+CREATE TABLE Customer_SignUp
+(
+    `customerNo`        INT             NOT NULL    AUTO_INCREMENT COMMENT '유저번호', 
+    `customerId`        VARCHAR(100)    NOT NULL    COMMENT '유저아이디', 
+    `customerPW`        VARCHAR(100)    NOT NULL    COMMENT '유저비밀번호', 
+    `customerName`      VARCHAR(200)    NOT NULL    COMMENT '유저이름', 
+    `customerNickname`  VARCHAR(100)    NOT NULL    COMMENT '유저닉네임', 
+    `customerEmail`     VARCHAR(200)    NOT NULL    COMMENT '유저이메일', 
+    `customerInterest`  VARCHAR(500)    NOT NULL    COMMENT '관심사', 
+    `customerGender`    VARCHAR(100)    NOT NULL    COMMENT '유저성별', 
+    PRIMARY KEY (customerNo)
+);
+
+
+-- Customer_SignUp Table Create SQL
+CREATE TABLE IT_Category
+(
+    `postNo`            INT              NOT NULL    AUTO_INCREMENT COMMENT '글번호', 
+    `postTitle`         VARCHAR(100)     NOT NULL    COMMENT '문의글제목', 
+    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '유저닉네임', 
+    `postDate`          DATE             NOT NULL    COMMENT '작성날짜', 
+    `contents`          VARCHAR(3000)    NOT NULL    COMMENT '글본문', 
+    `commentsCount`     INT              NOT NULL    DEFAULT 0 COMMENT '총댓글수', 
+    `postCategory`      VARCHAR(100)     NOT NULL    COMMENT '글분류', 
+    `customerNo`        INT              NOT NULL    COMMENT '유저번호', 
+    PRIMARY KEY (postNo)
+);
+
+ALTER TABLE IT_Category
+    ADD CONSTRAINT FK_IT_Category_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
+        REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- Customer_SignUp Table Create SQL
+CREATE TABLE Language_Category
+(
+    `postNo`            INT              NOT NULL    AUTO_INCREMENT COMMENT '글번호', 
+    `postTitle`         VARCHAR(100)     NOT NULL    COMMENT '문의글제목', 
+    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '유저닉네임', 
+    `postDate`          DATE             NOT NULL    COMMENT '작성날짜', 
+    `contents`          VARCHAR(3000)    NOT NULL    COMMENT '글본문', 
+    `commentsCount`     INT              NOT NULL    DEFAULT 0 COMMENT '총댓글수', 
+    `postCategory`      VARCHAR(100)     NOT NULL    COMMENT '글분류', 
+    `customerNo`        INT              NOT NULL    COMMENT '유저번호', 
+    PRIMARY KEY (postNo)
+);
+
+ALTER TABLE Language_Category
+    ADD CONSTRAINT FK_Language_Category_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
+        REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- Customer_SignUp Table Create SQL
+CREATE TABLE PublicServant_Category
+(
+    `postNo`            INT              NOT NULL    AUTO_INCREMENT COMMENT '글번호', 
+    `postTitle`         VARCHAR(100)     NOT NULL    COMMENT '문의글제목', 
+    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '유저닉네임', 
+    `postDate`          DATE             NOT NULL    COMMENT '작성날짜', 
+    `contents`          VARCHAR(3000)    NOT NULL    COMMENT '글본문', 
+    `commentsCount`     INT              NOT NULL    DEFAULT 0 COMMENT '총댓글수', 
+    `postCategory`      VARCHAR(100)     NOT NULL    COMMENT '글분류', 
+    `customerNo`        INT              NOT NULL    COMMENT '유저번호', 
+    PRIMARY KEY (postNo)
+);
+
+ALTER TABLE PublicServant_Category
+    ADD CONSTRAINT FK_PublicServant_Category_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
+        REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- Customer_SignUp Table Create SQL
+CREATE TABLE Certificate_Category
+(
+    `postNo`            INT              NOT NULL    AUTO_INCREMENT COMMENT '글번호', 
+    `postTitle`         VARCHAR(100)     NOT NULL    COMMENT '문의글제목', 
+    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '유저닉네임', 
+    `postDate`          DATE             NOT NULL    COMMENT '작성날짜', 
+    `contents`          VARCHAR(3000)    NOT NULL    COMMENT '글본문', 
+    `commentsCount`     INT              NOT NULL    DEFAULT 0 COMMENT '총댓글수', 
+    `postCategory`      VARCHAR(100)     NOT NULL    COMMENT '글분류', 
+    `customerNo`        INT              NOT NULL    COMMENT '유저번호', 
+    PRIMARY KEY (postNo)
+);
+
+ALTER TABLE Certificate_Category
+    ADD CONSTRAINT FK_Certificate_Category_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
+        REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- Customer_SignUp Table Create SQL
+CREATE TABLE Etc_Category
+(
+    `postNo`            INT              NOT NULL    AUTO_INCREMENT COMMENT '글번호', 
+    `postTitle`         VARCHAR(100)     NOT NULL    COMMENT '문의글제목', 
+    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '유저닉네임', 
+    `postDate`          DATE             NOT NULL    COMMENT '작성날짜', 
+    `contents`          VARCHAR(3000)    NOT NULL    COMMENT '글본문', 
+    `commentsCount`     INT              NOT NULL    DEFAULT 0 COMMENT '총댓글수', 
+    `postCategory`      VARCHAR(100)     NOT NULL    COMMENT '글분류', 
+    `customerNo`        INT              NOT NULL    COMMENT '유저번호', 
+    PRIMARY KEY (postNo)
+);
+
+ALTER TABLE Etc_Category
+    ADD CONSTRAINT FK_Etc_Category_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
+        REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- Customer_SignUp Table Create SQL
+CREATE TABLE Etc_Comments
+(
+    `commentsNo`        INT              NOT NULL    AUTO_INCREMENT COMMENT '댓글번호',
+    `postNo`            INT              NOT NULL    COMMENT '글번호',
+    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
+    `customerNo`        INT              NOT NULL    COMMENT '유저번호',
+    `comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
+    `postDate`          DATE             NOT NULL    COMMENT '작성날짜',
+    PRIMARY KEY (commentsNo, postNo)
+);
+
+ALTER TABLE Etc_Comments
+    ADD CONSTRAINT FK_Etc_Comments_postNo_Etc_Category_postNo FOREIGN KEY (postNo)
+        REFERENCES Etc_Category (postNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE Etc_Comments
+    ADD CONSTRAINT FK_Etc_Comments_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
+        REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- Customer_SignUp Table Create SQL
+CREATE TABLE Certificate_Comments
+(
+    `commentsNo`        INT              NOT NULL    AUTO_INCREMENT COMMENT '댓글번호',
+    `postNo`            INT              NOT NULL    COMMENT '글번호',
+    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
+    `customerNo`        INT              NOT NULL    COMMENT '유저번호',
+    `comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
+    `postDate`          DATE             NOT NULL    COMMENT '작성날짜',
+    PRIMARY KEY (commentsNo, postNo)
+);
+
+ALTER TABLE Certificate_Comments
+    ADD CONSTRAINT FK_Certificate_Comments_postNo_Certificate_Category_postNo FOREIGN KEY (postNo)
+        REFERENCES Certificate_Category (postNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE Certificate_Comments
+    ADD CONSTRAINT FK_Certificate_Comments_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
+        REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- Customer_SignUp Table Create SQL
+CREATE TABLE PublicServant_Comments
+(
+    `commentsNo`        INT              NOT NULL    AUTO_INCREMENT COMMENT '댓글번호',
+    `postNo`            INT              NOT NULL    COMMENT '글번호',
+    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
+    `customerNo`        INT              NOT NULL    COMMENT '유저번호',
+    `comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
+    `postDate`          DATE             NOT NULL    COMMENT '작성날짜',
+    PRIMARY KEY (commentsNo, postNo)
+);
+
+ALTER TABLE PublicServant_Comments
+    ADD CONSTRAINT FK_PublicServant_Comments_postNo_PublicServant_Category_postNo FOREIGN KEY (postNo)
+        REFERENCES PublicServant_Category (postNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE PublicServant_Comments
+    ADD CONSTRAINT FK_PublicServant_Comments_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
+        REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- Customer_SignUp Table Create SQL
+CREATE TABLE Language_Comments
+(
+    `commentsNo`        INT              NOT NULL    AUTO_INCREMENT COMMENT '댓글번호',
+    `postNo`            INT              NOT NULL    COMMENT '글번호',
+    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
+    `customerNo`        INT              NOT NULL    COMMENT '유저번호',
+    `comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
+    `postDate`          DATE             NOT NULL    COMMENT '작성날짜',
+    PRIMARY KEY (commentsNo, postNo)
+);
+
+ALTER TABLE Language_Comments
+    ADD CONSTRAINT FK_Language_Comments_postNo_Language_Category_postNo FOREIGN KEY (postNo)
+        REFERENCES Language_Category (postNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE Language_Comments
+    ADD CONSTRAINT FK_Language_Comments_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
+        REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- Customer_SignUp Table Create SQL
+CREATE TABLE IT_Comments
+(
+    `commentsNo`        INT              NOT NULL    AUTO_INCREMENT COMMENT '댓글번호',
+    `postNo`            INT              NOT NULL    COMMENT '글번호',
+    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
+    `customerNo`        INT              NOT NULL    COMMENT '유저번호',
+    `comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
+    `postDate`          DATE             NOT NULL    COMMENT '작성날짜',
+    PRIMARY KEY (commentsNo, postNo)
+);
+
+ALTER TABLE IT_Comments
+    ADD CONSTRAINT FK_IT_Comments_postNo_IT_Category_postNo FOREIGN KEY (postNo)
+        REFERENCES IT_Category (postNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE IT_Comments
+    ADD CONSTRAINT FK_IT_Comments_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
+        REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+

@@ -1,6 +1,10 @@
 package kr.co.web.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +26,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 
+import kr.co.board.dto.ItBoard_Dto;
+import kr.co.board.dto.LanguageBoard_Dto;
+import kr.co.board.service.BoardService;
+import kr.co.board.utils.CalculateTime;
 import kr.co.kakao.KakaoController;
 import kr.co.naver.NaverLoginBO;
 import kr.co.web.dto.Customer_dto;
@@ -37,10 +45,31 @@ public class Customer_controller {
 	@Autowired
     private NaverLoginBO naverLoginBO;
     private String apiResult = null;
+    @Setter
+    @Autowired
+    private BoardService bs;
 	
 	// 메인화면 이동
 	@RequestMapping("main")
-	public String main() throws Exception {
+	public String main(Model model) throws Exception {
+		CalculateTime ct = new CalculateTime();
+		
+		List<ItBoard_Dto> itPost = bs.getMainItCategory();
+		for(ItBoard_Dto dto : itPost) {
+			Date date = dto.getPostDate();
+			String postDate = ct.calculateTime(date);
+			dto.setPostDateStr(postDate);
+		}
+		
+		List<LanguageBoard_Dto> languagePost = bs.getMainLanguageCategory(); 
+		for(LanguageBoard_Dto dto : languagePost) {
+			Date date = dto.getPostDate();
+			String postDate = ct.calculateTime(date);
+			dto.setPostDateStr(postDate);
+		}
+		model.addAttribute("itPost", itPost);
+		model.addAttribute("languagePost", languagePost);
+		
 		return "main";
 	}
 	// 로그인
@@ -59,6 +88,22 @@ public class Customer_controller {
 		return mav;
 	}
 /* 회원가입 */
+	// 암호화 메소드
+	private String encrypt(String m) {
+		// Jasypt 설정으로 DB 정보 암호화
+		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+		encryptor.setPassword("somePassword");
+		encryptor.setAlgorithm("PBEWithMD5AndDES");
+		return encryptor.encrypt(m);
+	}
+	// 복호화 메소드
+	private String decrypt(String m) {
+		// Jasypt 설정으로 DB 정보 암호화
+		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+		encryptor.setPassword("somePassword");
+		encryptor.setAlgorithm("PBEWithMD5AndDES");
+		return encryptor.decrypt(m);
+	}
 	// 관심사 list로 사용할 메소드
 	private void referenceData(Model m) {
 		String[] interest = { "게임", "웹툰", "연예", "기타" };
@@ -74,10 +119,7 @@ public class Customer_controller {
 	@RequestMapping(value = "success_signup", method = RequestMethod.POST)
 	public String success_signup(Customer_dto dto) throws Exception {
 		// Jasypt 설정으로 DB 정보 암호화
-		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-		encryptor.setPassword("somePassword");
-		encryptor.setAlgorithm("PBEWithMD5AndDES");
-		String encStr = encryptor.encrypt(dto.getCustomerPW()); // 비밀번호 암호화
+		String encStr = encrypt(dto.getCustomerPW()); // 비밀번호 암호화
 		dto.setCustomerPW(encStr);
 		ms.main_signup(dto);
 		return "main";
@@ -105,17 +147,14 @@ public class Customer_controller {
 	@RequestMapping(value="user_login_chk")
 	public String main_login_user(HttpSession session,
 			String customerId, String customerPW) throws Exception {
-		// Jasypt 설정으로 DB 정보 암호화
-		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
 		if(session.getAttribute("login") !=null) {
-			session.removeAttribute("login");
+	 	      session.invalidate();
 	    } // 로그인 세션 연결 해제
 		try {
-			String user_id = ms.main_login_user_id(customerId);
-			Customer_dto list = ms.main_login_user(user_id);
-			encryptor.setPassword("somePassword");
-			encryptor.setAlgorithm("PBEWithMD5AndDES");
-			String decStr = encryptor.decrypt(list.getCustomerPW()); // 비밀번호 복호화
+			String user_id = ms.main_login_user_id(customerId); // 입력한 id로 db 검색
+			Customer_dto list = ms.main_login_user(user_id); // 입력한 아이디로 db list 저장
+			String decStr = decrypt(list.getCustomerPW()); // id와 pw가 매칭되면 비밀번호 복호화
+			System.out.println(decStr);
 			if(decStr.equals(customerPW)) {
 				session.setAttribute("login", list);
 				return "main";
@@ -124,7 +163,7 @@ public class Customer_controller {
 				return "service/login";
 			}
 		} catch (Exception e) {
-			session.setAttribute("fail", "null");
+			session.setAttribute("fail", "null"); // fail이라는 세션으로 null을 보낸다.
 		}
 		return "service/login";
 	}
@@ -132,7 +171,7 @@ public class Customer_controller {
 	@RequestMapping(value = "kakaologin", method = { RequestMethod.GET, RequestMethod.POST })
 	public String kakaoLogin(@RequestParam("code") String code, Customer_dto list,
 			HttpServletResponse response, HttpSession session) throws Exception {
-		if(session.getAttribute("login") !=null) {
+		if(session.getAttribute("login") != null) {
 			session.removeAttribute("login");
 	    } // 로그인 세션 연결 해제
 		JsonNode node = KakaoController.getAccessToken(code); // accessToken에 사용자의 로그인한 모든 정보가 들어있다.
@@ -174,16 +213,67 @@ public class Customer_controller {
  	      session.invalidate();
  	      return "redirect:main";
  	}
- 	/* 상세정보 및 비밀번호 변경 */
+ 	// 상세정보
  	@RequestMapping(value="user-details", method = RequestMethod.GET)
     public String main_user_details(Model m, HttpSession session) {
  		if(session.getAttribute("login") == null) {
-			return "login";
+			return "service/login";
 	    } else {
 	    	String id = ((Customer_dto) session.getAttribute("login")).getCustomerId();
 	 		Customer_dto list = ms.main_login_user(id);
 	 		session.setAttribute("login", list);
+			return "service/details";
 	    }
-		return "service/details";
  	}
+ 	// 비밀번호 변경 화면
+ 	@RequestMapping(value="user-pw-chan", method = RequestMethod.GET)
+    public String user_pw_chan(Model m, HttpSession session) {
+ 		if(session.getAttribute("login") == null) {
+			return "service/login";
+	    } else {
+			return "service/user_pw_chan";
+	    }
+ 	}
+ 	// 비밀번호 변경
+  	@RequestMapping(value="user_pw_chan_update",  method = { RequestMethod.GET, RequestMethod.POST })
+    public String user_pw_chan_update(HttpSession session, String current_pw, String new_pw, HttpServletResponse response_equals) {
+  		if(session.getAttribute("login") == null) {
+ 			return "service/login";
+ 	    } else {
+			try {
+				// 현재 비밀번호 입력
+				Customer_dto list = ms.main_login_user(((Customer_dto) session.getAttribute("login")).getCustomerId());
+				String current_pw_db = decrypt(list.getCustomerPW()); // db 암호화된 비밀번호 복호화 후 가져옴
+				boolean bool = current_pw_db.equals(current_pw);
+				response_equals.setContentType("text/html; charset=UTF-8");
+				if(bool == true) {
+					String encryptPW = encrypt(new_pw); // 비밀번호 암호화
+				 	ms.user_pw_chan(list.getCustomerId(), encryptPW);
+				 	PrintWriter out_equals = response_equals.getWriter();
+					out_equals.println("<script>"
+									 + "alert('비밀번호가 변경되었습니다.');"
+									 + "</script>");
+					out_equals.flush();
+					// 비밀번호가 변경 되었을 경우
+			        session.setAttribute("pw_chan", bool);
+			 		return "service/details";
+				}
+				if(bool == false) {
+					PrintWriter out_equals = response_equals.getWriter();
+					out_equals.println("<script>"
+									 + "alert('비밀번호를 확인해주세요.');"
+									 + "history.back();"
+									 + "</script>");
+					out_equals.flush();
+			        session.setAttribute("pw_chan", bool);
+					return "service/user_pw_chan";
+				}
+			} catch (Exception e) {
+				// 비밀번호가 틀렸을 경우
+		        session.setAttribute("pw_chan", false);
+				return "service/user_pw_chan";
+			}
+			return "service/user_pw_chan";
+ 	    }
+  	}
 }

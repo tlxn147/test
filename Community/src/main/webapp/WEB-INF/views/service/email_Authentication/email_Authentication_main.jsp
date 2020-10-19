@@ -3,10 +3,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <body>
-	<%
-		request.setCharacterEncoding("UTF-8");
-		String email = request.getParameter("email_sub");
-	%>
 	<div id="pop_sub">
 	<div module="member_checkId">
 		<h1>이메일 인증</h1>
@@ -15,7 +11,7 @@
 				<legend>인증번호 입력</legend>
 				<p>입력한 이메일로 전송된 인증번호를 입력하세요.</p>
 				<form action="email_Authentication_check" method="post">
-					<input type="email" name="e_mail" id="e_mail" value="<%=email%>" readonly="readonly">
+					<input type="email" name="e_mail" id="e_mail" value="${email}" readonly="readonly">
 					<input type="button" id="send_authentication" value="인증번호 전송" ><br>
 				</form>
 				<form>
