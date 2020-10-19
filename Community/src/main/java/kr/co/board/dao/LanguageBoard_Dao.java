@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
-
-import kr.co.board.dto.ItBoard_Dto;
 import kr.co.board.dto.LanguageBoard_Dto;
 
 public class LanguageBoard_Dao extends SqlSessionDaoSupport   {

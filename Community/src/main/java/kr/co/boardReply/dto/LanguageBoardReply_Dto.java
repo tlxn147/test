@@ -2,11 +2,6 @@ package kr.co.boardReply.dto;
 
 import java.util.Date;
 
-import lombok.Getter;
-import lombok.Setter;
-
-
-
 public class LanguageBoardReply_Dto {
 	
 	private int commentsNo; //´ñ±Û ¹øÈ£

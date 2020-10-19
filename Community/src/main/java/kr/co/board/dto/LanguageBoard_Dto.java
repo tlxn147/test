@@ -2,11 +2,6 @@ package kr.co.board.dto;
 
 import java.util.Date;
 
-import lombok.Getter;
-import lombok.Setter;
-
-
-
 public class LanguageBoard_Dto {
 	
 	
