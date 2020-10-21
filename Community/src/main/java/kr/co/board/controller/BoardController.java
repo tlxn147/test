@@ -55,11 +55,7 @@ public class BoardController {
 	@RequestMapping(value="/itCategoryWrite", method = RequestMethod.GET) 
 	public String getItCategoryWrite(HttpSession session, HttpServletResponse response) throws Exception{
 		if(session.getAttribute("login") == null) {
-			response.setContentType("text/html; charset=UTF-8");
-            PrintWriter out = response.getWriter();
-            out.println("<script>alert('로그인이 필요한 서비스입니다.'); </script>");
-            out.flush();
-			return "service/login";
+			return "/error/login_error";
 		}
 		return "/board/write/it-write";
 	}
@@ -168,11 +164,7 @@ public class BoardController {
 		@RequestMapping(value="/languageCategoryWrite", method = RequestMethod.GET) 
 		public String getLanguageCategoryWrite(HttpSession session, HttpServletResponse response) throws Exception{
 			if(session.getAttribute("login") == null) { 
-				response.setContentType("text/html; charset=UTF-8");
-	            PrintWriter out = response.getWriter();
-	            out.println("<script>alert('로그인이 필요한 서비스입니다.'); </script>");
-	            out.flush();
-				return "service/login";
+				return "/error/login_error";
 			}
 			return "board/write/language-write";
 		}

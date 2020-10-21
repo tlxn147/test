@@ -154,9 +154,11 @@ public class Customer_controller {
 			String decStr = decrypt(list.getCustomerPW()); // id와 pw가 매칭되면 비밀번호 복호화
 			System.out.println(decStr);
 			if(decStr.equals(customerPW)) {
+				// 아이디와 비밀번호 모두 맞았을 시
 				session.setAttribute("login", list);
 				return "main";
 			} else {
+				// 아이디나 비밀번호가 틀렸을 시
 		        session.setAttribute("fail", user_id);
 				return "service/login";
 			}
@@ -215,7 +217,7 @@ public class Customer_controller {
  	@RequestMapping(value="user-details", method = RequestMethod.GET)
     public String main_user_details(Model m, HttpSession session) {
  		if(session.getAttribute("login") == null) {
-			return "service/login";
+ 			return "/error/login_error";
 	    } else {
 	    	String id = ((Customer_dto) session.getAttribute("login")).getCustomerId();
 	 		Customer_dto list = ms.main_login_user(id);
@@ -227,7 +229,7 @@ public class Customer_controller {
  	@RequestMapping(value="user-pw-chan", method = RequestMethod.GET)
     public String user_pw_chan(Model m, HttpSession session) {
  		if(session.getAttribute("login") == null) {
-			return "service/login";
+ 			return "/error/login_error";
 	    } else {
 			return "service/user_pw_chan";
 	    }
@@ -236,7 +238,7 @@ public class Customer_controller {
   	@RequestMapping(value="user_pw_chan_update",  method = { RequestMethod.GET, RequestMethod.POST })
     public String user_pw_chan_update(HttpSession session, String current_pw, String new_pw, HttpServletResponse response_equals) {
   		if(session.getAttribute("login") == null) {
- 			return "service/login";
+  			return "/error/login_error";
  	    } else {
 			try {
 				// 현재 비밀번호 입력
