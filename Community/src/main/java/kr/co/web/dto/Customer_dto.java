@@ -11,6 +11,8 @@ public class Customer_dto {
 	String customerEmail_2;
 	String customerInterest;
 	String customerGender;
+	String customerPic;
+	String Customer_SignUp;
 	public int getCustomerNo() {
 		return customerNo;
 	}
@@ -71,6 +73,16 @@ public class Customer_dto {
 	public void setCustomerGender(String customerGender) {
 		this.customerGender = customerGender;
 	}
-	
-	
+	public String getCustomerPic() {
+		return customerPic;
+	}
+	public void setCustomerPic(String customerPic) {
+		this.customerPic = customerPic;
+	}
+	public String getCustomer_SignUp() {
+		return Customer_SignUp;
+	}
+	public void setCustomer_SignUp(String customer_SignUp) {
+		Customer_SignUp = customer_SignUp;
+	}
 }

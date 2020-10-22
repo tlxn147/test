@@ -58,7 +58,6 @@ public class Customer_controller {
 			String postDate = ct.calculateTime(date);
 			dto.setPostDateStr(postDate);
 		}
-		
 		List<LanguageBoard_Dto> languagePost = bs.getMainLanguageCategory(); 
 		for(LanguageBoard_Dto dto : languagePost) {
 			Date date = dto.getPostDate();
@@ -156,7 +155,7 @@ public class Customer_controller {
 			if(decStr.equals(customerPW)) {
 				// 아이디와 비밀번호 모두 맞았을 시
 				session.setAttribute("login", list);
-				return "main";
+				return "redirect:/main";
 			} else {
 				// 아이디나 비밀번호가 틀렸을 시
 		        session.setAttribute("fail", user_id);
@@ -181,7 +180,7 @@ public class Customer_controller {
 		list.setCustomerEmail("카카오 로그인"); // 카카오 로그인은 이메일을 못가져옵니다.
 		list.setCustomerId(properties.path("nickname").asText()); // 카카오 로그인 이름 가져온다.
 		session.setAttribute("login", list); 
-		return "redirect:main";
+		return "redirect:/main";
 	}
 	// 네이버 로그인
     @RequestMapping(value = "naverlogin", method = { RequestMethod.GET, RequestMethod.POST })
@@ -205,13 +204,13 @@ public class Customer_controller {
         list.setCustomerEmail("네이버 로그인"); // 네이버 로그인 이메일 가져온다.
         session.setAttribute("login", list);
         m.addAttribute("result", apiResult);
-        return "redirect:main";
+        return "redirect:/main";
     }
 	// 로그아웃
  	@RequestMapping(value="logout", method = RequestMethod.GET)
  	   public String logout(HttpSession session) throws Exception{
  	      session.invalidate();
- 	      return "redirect:main";
+ 	      return "redirect:/main";
  	}
  	// 상세정보
  	@RequestMapping(value="user-details", method = RequestMethod.GET)
