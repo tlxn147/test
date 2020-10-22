@@ -1,6 +1,5 @@
--- DROP DATABASE kmweb;
+DROP DATABASE kmweb;
 CREATE DATABASE kmweb;
-
 USE kmweb;
 -- Customer_SignUp Table Create SQL
 CREATE TABLE Customer_SignUp
@@ -14,7 +13,13 @@ CREATE TABLE Customer_SignUp
     `customerInterest`  VARCHAR(500)    NOT NULL    COMMENT '관심사', 
     `customerGender`    VARCHAR(100)    NOT NULL    COMMENT '유저성별', 
     PRIMARY KEY (customerNo)
-);
+); 
+
+ALTER TABLE Customer_SignUp
+    ADD customerPic Text NULL COMMENT '대표 이미지'; #대표 이미지 컬럼 추가
+    
+ALTER TABLE Customer_SignUp
+	ADD customerGreetings Text NULL COMMENT '인사말';  #인사말 컬럼 추가
 
 
 -- Customer_SignUp Table Create SQL
@@ -34,6 +39,12 @@ CREATE TABLE IT_Category
 ALTER TABLE IT_Category
     ADD CONSTRAINT FK_IT_Category_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
         REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+        
+ALTER TABLE IT_Category
+    ADD viewCount INT Default 0 NOT NULL COMMENT '조회 수'; #조회수 컬럼 추가     
+    
+ALTER TABLE IT_Category
+    MODIFY postDate DATETIME;  #date -> datetime 변경
 
 
 -- Customer_SignUp Table Create SQL
@@ -54,6 +65,11 @@ ALTER TABLE Language_Category
     ADD CONSTRAINT FK_Language_Category_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
         REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE Language_Category
+    ADD viewCount INT Default 0 NOT NULL COMMENT '조회 수'; #조회수 컬럼 추가        
+
+ALTER TABLE Language_Category
+    MODIFY postDate DATETIME;  
 
 -- Customer_SignUp Table Create SQL
 CREATE TABLE PublicServant_Category
@@ -73,6 +89,11 @@ ALTER TABLE PublicServant_Category
     ADD CONSTRAINT FK_PublicServant_Category_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
         REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE PublicServant_Category
+    ADD viewCount INT Default 0 NOT NULL COMMENT '조회 수'; #조회수 컬럼 추가
+
+ALTER TABLE PublicServant_Category
+    MODIFY postDate DATETIME;  
 
 -- Customer_SignUp Table Create SQL
 CREATE TABLE Certificate_Category
@@ -92,6 +113,11 @@ ALTER TABLE Certificate_Category
     ADD CONSTRAINT FK_Certificate_Category_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
         REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE Certificate_Category
+    ADD viewCount INT Default 0 NOT NULL COMMENT '조회 수'; #조회수 컬럼 추가        
+
+ALTER TABLE Certificate_Category
+    MODIFY postDate DATETIME;  
 
 -- Customer_SignUp Table Create SQL
 CREATE TABLE Etc_Category
@@ -110,18 +136,23 @@ CREATE TABLE Etc_Category
 ALTER TABLE Etc_Category
     ADD CONSTRAINT FK_Etc_Category_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
         REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
+        
+ALTER TABLE Etc_Category
+    ADD viewCount INT Default 0 NOT NULL COMMENT '조회 수'; #조회수 컬럼 추가        
 
+ALTER TABLE Etc_Category
+    MODIFY postDate DATETIME;  
 
 -- Customer_SignUp Table Create SQL
 CREATE TABLE Etc_Comments
 (
     `commentsNo`        INT              NOT NULL    AUTO_INCREMENT COMMENT '댓글번호',
-    `postNo`            INT              NOT NULL    COMMENT '글번호',
-    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
-    `customerNo`        INT              NOT NULL    COMMENT '유저번호',
-    `comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
-    `postDate`          DATE             NOT NULL    COMMENT '작성날짜',
-    PRIMARY KEY (commentsNo, postNo)
+ `postNo`            INT              NOT NULL    COMMENT '글번호',
+`customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
+`customerNo`        INT              NOT NULL    COMMENT '유저번호',
+`comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
+`postDate`          DATE             NOT NULL    COMMENT '작성날짜',
+PRIMARY KEY (commentsNo, postNo)
 );
 
 ALTER TABLE Etc_Comments
@@ -132,17 +163,19 @@ ALTER TABLE Etc_Comments
     ADD CONSTRAINT FK_Etc_Comments_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
         REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE Etc_Comments
+    MODIFY postDate DATETIME;  
 
 -- Customer_SignUp Table Create SQL
 CREATE TABLE Certificate_Comments
 (
     `commentsNo`        INT              NOT NULL    AUTO_INCREMENT COMMENT '댓글번호',
-    `postNo`            INT              NOT NULL    COMMENT '글번호',
-    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
-    `customerNo`        INT              NOT NULL    COMMENT '유저번호',
-    `comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
-    `postDate`          DATE             NOT NULL    COMMENT '작성날짜',
-    PRIMARY KEY (commentsNo, postNo)
+ `postNo`            INT              NOT NULL    COMMENT '글번호',
+`customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
+`customerNo`        INT              NOT NULL    COMMENT '유저번호',
+`comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
+`postDate`          DATE             NOT NULL    COMMENT '작성날짜',
+PRIMARY KEY (commentsNo, postNo)
 );
 
 ALTER TABLE Certificate_Comments
@@ -153,17 +186,19 @@ ALTER TABLE Certificate_Comments
     ADD CONSTRAINT FK_Certificate_Comments_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
         REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE Certificate_Comments
+    MODIFY postDate DATETIME; 
 
 -- Customer_SignUp Table Create SQL
 CREATE TABLE PublicServant_Comments
 (
     `commentsNo`        INT              NOT NULL    AUTO_INCREMENT COMMENT '댓글번호',
-    `postNo`            INT              NOT NULL    COMMENT '글번호',
-    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
-    `customerNo`        INT              NOT NULL    COMMENT '유저번호',
-    `comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
-    `postDate`          DATE             NOT NULL    COMMENT '작성날짜',
-    PRIMARY KEY (commentsNo, postNo)
+ `postNo`            INT              NOT NULL    COMMENT '글번호',
+`customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
+`customerNo`        INT              NOT NULL    COMMENT '유저번호',
+`comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
+`postDate`          DATE             NOT NULL    COMMENT '작성날짜',
+PRIMARY KEY (commentsNo, postNo)
 );
 
 ALTER TABLE PublicServant_Comments
@@ -174,17 +209,19 @@ ALTER TABLE PublicServant_Comments
     ADD CONSTRAINT FK_PublicServant_Comments_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
         REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE PublicServant_Comments
+    MODIFY postDate DATETIME;
 
 -- Customer_SignUp Table Create SQL
 CREATE TABLE Language_Comments
 (
     `commentsNo`        INT              NOT NULL    AUTO_INCREMENT COMMENT '댓글번호',
-    `postNo`            INT              NOT NULL    COMMENT '글번호',
-    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
-    `customerNo`        INT              NOT NULL    COMMENT '유저번호',
-    `comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
-    `postDate`          DATE             NOT NULL    COMMENT '작성날짜',
-    PRIMARY KEY (commentsNo, postNo)
+ `postNo`            INT              NOT NULL    COMMENT '글번호',
+`customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
+`customerNo`        INT              NOT NULL    COMMENT '유저번호',
+`comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
+`postDate`          DATE         NOT NULL    COMMENT '작성날짜',
+PRIMARY KEY (commentsNo, postNo)
 );
 
 ALTER TABLE Language_Comments
@@ -195,17 +232,19 @@ ALTER TABLE Language_Comments
     ADD CONSTRAINT FK_Language_Comments_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
         REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE Language_Comments
+    MODIFY postDate DATETIME;
 
 -- Customer_SignUp Table Create SQL
 CREATE TABLE IT_Comments
 (
-    `commentsNo`        INT              NOT NULL    AUTO_INCREMENT COMMENT '댓글번호',
-    `postNo`            INT              NOT NULL    COMMENT '글번호',
-    `customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
-    `customerNo`        INT              NOT NULL    COMMENT '유저번호',
-    `comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
-    `postDate`          DATE             NOT NULL    COMMENT '작성날짜',
-    PRIMARY KEY (commentsNo, postNo)
+`commentsNo`        INT              NOT NULL    AUTO_INCREMENT COMMENT '댓글번호',
+`postNo`            INT              NOT NULL    COMMENT '글번호',
+`customerNickname`  VARCHAR(100)     NOT NULL    COMMENT '작성유저닉네임',
+`customerNo`        INT              NOT NULL    COMMENT '유저번호',
+`comments`          VARCHAR(3000)    NOT NULL    COMMENT '댓글본문',
+`postDate`          DATE             NOT NULL    COMMENT '작성날짜',
+PRIMARY KEY (commentsNo, postNo)
 );
 
 ALTER TABLE IT_Comments
@@ -216,4 +255,6 @@ ALTER TABLE IT_Comments
     ADD CONSTRAINT FK_IT_Comments_customerNo_Customer_SignUp_customerNo FOREIGN KEY (customerNo)
         REFERENCES Customer_SignUp (customerNo) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+ALTER TABLE IT_Comments
+    MODIFY postDate DATETIME;
 
