@@ -33,9 +33,6 @@
 	<a href="/kmweb/board/certificateCategory">자격증</a> <br>
 	<a href="/kmweb/board/etcCategory">기타</a> <br>
 
-
-
-
 <p>IT</p>	
 <table>
 <c:forEach items="${itPost}" var="itPost">

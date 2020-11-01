@@ -39,4 +39,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		set customerPW = #{customerPW}
 		where customerId = #{customerId}
 	</update>
+	<update id="pic_change" parameterType="String">
+		update customer_signup
+		set customerPic = #{customerPic}
+		where customerId = #{customerId}
+	</update>
 </mapper>

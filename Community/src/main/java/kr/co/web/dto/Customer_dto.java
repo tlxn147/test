@@ -13,6 +13,7 @@ public class Customer_dto {
 	String customerGender;
 	String customerPic;
 	String customerGreetings;
+	
 	public String getCustomerPic() {
 		return customerPic;
 	}
@@ -26,6 +27,9 @@ public class Customer_dto {
 		this.customerGreetings = customerGreetings;
 	}
 	
+
+	String Customer_SignUp;
+
 	public int getCustomerNo() {
 		return customerNo;
 	}
@@ -87,5 +91,10 @@ public class Customer_dto {
 		this.customerGender = customerGender;
 	}
 	
-	
+	public String getCustomer_SignUp() {
+		return Customer_SignUp;
+	}
+	public void setCustomer_SignUp(String customer_SignUp) {
+		Customer_SignUp = customer_SignUp;
+	}
 }
