@@ -210,7 +210,7 @@ select * from it_category order by postNo desc limit 10
 
 	</update>
 
-	<!-- It게시판 글 삭제 -->
+	<!-- language게시판 글 삭제 -->
 	<delete id ="language_delete" parameterType = "int">
 
 	Delete from language_Category where postNo = #{postNo}
@@ -232,5 +232,350 @@ select * from it_category order by postNo desc limit 10
 	
 	select * from language_category order by postNo desc limit 10
 	</select>
+	
+<!-- ==================================================================================================================== -->
+
+<!-- PublicServant게시판 리스트 +페이징+검색 -->
+	<select id ="publicServant_board" parameterType ="hashMap" resultType = "kr.co.board.dto.PublicServantBoard_Dto"> 
+
+	Select postNo, postTitle, customerNickname, postDate, commentsCount, postCategory, viewCount from PublicServant_Category
+
+	<if test='searchType.equals("postTitle")'>
+	where postTitle LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("contents")'>
+	where contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("postTitle_contents")'>
+	where postTitle LIKE concat('%',#{keyword},'%') or contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("customerNickname")'>
+	where customerNickname LIKE concat('%',#{keyword},'%')
+	</if>
+
+	order by postNo DESC limit #{displayPost}, #{postNum}
+
+	</select>
+
+	<!-- PublicServant게시판 총 갯수 + 검색 적용 -->
+	<select id="publicServant_count" parameterType="hashMap" resultType="int">
+
+	Select count(postNo) from PublicServant_Category 
+
+	<if test='searchType.equals("postTitle")'>
+	where postTitle LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("contents")'>
+	where contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("postTitle_contents")'>
+	where postTitle LIKE concat('%',#{keyword},'%') or contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("customerNickname")'>
+	where customerNickname LIKE concat('%',#{keyword},'%')
+	</if>
+	 
+	</select>
+
+	<!-- PublicServant게시판 글 작성 -->
+	<insert id="publicServant_write" parameterType = "kr.co.board.dto.PublicServantBoard_Dto">
+
+	insert into PublicServant_Category
+	set postTitle =#{postTitle},
+	    customerNickname=#{customerNickname},
+	    postDate=#{postDate},
+	    contents=#{contents},
+	    postCategory=#{postCategory},
+	    customerNo=#{customerNo}
+	    
+	</insert>
+
+	<!-- PublicServant게시판 글 조회 -->
+	<select id ="publicServant_view" parameterType = "int" resultType = "kr.co.board.dto.PublicServantBoard_Dto">
+
+	select postNo, postTitle, customerNickname, postDate, contents, postCategory, customerNo, viewCount from PublicServant_Category where postNo= #{postNo}
+
+	</select>
+	
+	<!-- PublicServant 글 조회수 업데이트 문 -->
+    <update id = "publicServantViewCnt_update" parameterType="int">    
+
+    update PublicServant_Category set viewCount = viewCount + 1 
+
+    where postNo = #{postNo}
+
+    </update>
+	
+
+	<!-- PublicServant게시판 글 수정 -->
+	<update id ="publicServant_update" parameterType= "kr.co.board.dto.PublicServantBoard_Dto">
+
+	Update PublicServant_Category 
+	set postTitle = #{postTitle},
+	    postCategory = #{postCategory},
+	    postDate = #{postDate},
+	    contents = #{contents}
+	    where postNo = #{postNo}
+
+	</update>
+
+	<!-- PublicServant게시판 글 삭제 -->
+	<delete id ="publicServant_delete" parameterType = "int">
+
+	Delete from PublicServant_Category where postNo = #{postNo}
+
+	</delete>
+    
+	<!-- PublicServant게시판 답글 갯수 수정 -->
+	<update id ="publicServant_commentsCount_update" parameterType="hashMap">
+
+	Update PublicServant_Category
+	set commentsCount =#{commentsCount}
+	where postNo =#{postNo}
+
+	</update>
+	
+	<!--Main페이지에 보여줄 최근 PublicServant 게시글 10개 조회 SQL문  -->
+	
+	<select id = "publicServant_mainPage" resultType = "kr.co.board.dto.PublicServantBoard_Dto">
+	
+	select * from PublicServant_category order by postNo desc limit 10
+	</select>	
+
+<!-- ==================================================================================================================== -->
+
+<!-- Certificate게시판 리스트 +페이징+검색 -->
+	<select id ="certificate_board" parameterType ="hashMap" resultType = "kr.co.board.dto.CertificateBoard_Dto"> 
+
+	Select postNo, postTitle, customerNickname, postDate, commentsCount, postCategory, viewCount from Certificate_Category
+
+	<if test='searchType.equals("postTitle")'>
+	where postTitle LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("contents")'>
+	where contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("postTitle_contents")'>
+	where postTitle LIKE concat('%',#{keyword},'%') or contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("customerNickname")'>
+	where customerNickname LIKE concat('%',#{keyword},'%')
+	</if>
+
+	order by postNo DESC limit #{displayPost}, #{postNum}
+
+	</select>
+
+	<!-- Certificate게시판 총 갯수 + 검색 적용 -->
+	<select id="certificate_count" parameterType="hashMap" resultType="int">
+
+	Select count(postNo) from Certificate_Category 
+
+	<if test='searchType.equals("postTitle")'>
+	where postTitle LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("contents")'>
+	where contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("postTitle_contents")'>
+	where postTitle LIKE concat('%',#{keyword},'%') or contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("customerNickname")'>
+	where customerNickname LIKE concat('%',#{keyword},'%')
+	</if>
+	 
+	</select>
+
+	<!-- Certificate게시판 글 작성 -->
+	<insert id="certificate_write" parameterType = "kr.co.board.dto.CertificateBoard_Dto">
+
+	insert into Certificate_Category
+	set postTitle =#{postTitle},
+	    customerNickname=#{customerNickname},
+	    postDate=#{postDate},
+	    contents=#{contents},
+	    postCategory=#{postCategory},
+	    customerNo=#{customerNo}
+	    
+	</insert>
+
+	<!-- Certificate게시판 글 조회 -->
+	<select id ="certificate_view" parameterType = "int" resultType = "kr.co.board.dto.CertificateBoard_Dto">
+
+	select postNo, postTitle, customerNickname, postDate, contents, postCategory, customerNo, viewCount from Certificate_Category where postNo= #{postNo}
+
+	</select>
+	
+	<!-- Certificate 글 조회수 업데이트 문 -->
+    <update id = "certificateViewCnt_update" parameterType="int">    
+
+    update Certificate_Category set viewCount = viewCount + 1 
+
+    where postNo = #{postNo}
+
+    </update>
+	
+
+	<!-- Certificate게시판 글 수정 -->
+	<update id ="certificate_update" parameterType= "kr.co.board.dto.CertificateBoard_Dto">
+
+	Update Certificate_Category 
+	set postTitle = #{postTitle},
+	    postCategory = #{postCategory},
+	    postDate = #{postDate},
+	    contents = #{contents}
+	    where postNo = #{postNo}
+
+	</update>
+
+	<!-- Certificate게시판 글 삭제 -->
+	<delete id ="certificate_delete" parameterType = "int">
+
+	Delete from Certificate_Category where postNo = #{postNo}
+
+	</delete>
+    
+	<!-- Certificate게시판 답글 갯수 수정 -->
+	<update id ="certificate_commentsCount_update" parameterType="hashMap">
+
+	Update Certificate_Category
+	set commentsCount =#{commentsCount}
+	where postNo =#{postNo}
+
+	</update>
+	
+	<!--Main페이지에 보여줄 최근 Certificate 게시글 10개 조회 SQL문  -->
+	
+	<select id = "certificate_mainPage" resultType = "kr.co.board.dto.CertificateBoard_Dto">
+	
+	select * from Certificate_category order by postNo desc limit 10
+	</select>
+	
+<!-- ==================================================================================================================== -->
+
+<!-- Etc게시판 리스트 +페이징+검색 -->
+	<select id ="etc_board" parameterType ="hashMap" resultType = "kr.co.board.dto.EtcBoard_Dto"> 
+
+	Select postNo, postTitle, customerNickname, postDate, commentsCount, postCategory, viewCount from Etc_Category
+
+	<if test='searchType.equals("postTitle")'>
+	where postTitle LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("contents")'>
+	where contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("postTitle_contents")'>
+	where postTitle LIKE concat('%',#{keyword},'%') or contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("customerNickname")'>
+	where customerNickname LIKE concat('%',#{keyword},'%')
+	</if>
+
+	order by postNo DESC limit #{displayPost}, #{postNum}
+
+	</select>
+
+	<!-- Etc게시판 총 갯수 + 검색 적용 -->
+	<select id="etc_count" parameterType="hashMap" resultType="int">
+
+	Select count(postNo) from Etc_Category 
+
+	<if test='searchType.equals("postTitle")'>
+	where postTitle LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("contents")'>
+	where contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("postTitle_contents")'>
+	where postTitle LIKE concat('%',#{keyword},'%') or contents LIKE concat('%',#{keyword},'%')
+	</if>
+
+	<if test='searchType.equals("customerNickname")'>
+	where customerNickname LIKE concat('%',#{keyword},'%')
+	</if>
+	 
+	</select>
+
+	<!-- Etc게시판 글 작성 -->
+	<insert id="etc_write" parameterType = "kr.co.board.dto.EtcBoard_Dto">
+
+	insert into Etc_Category
+	set postTitle =#{postTitle},
+	    customerNickname=#{customerNickname},
+	    postDate=#{postDate},
+	    contents=#{contents},
+	    postCategory=#{postCategory},
+	    customerNo=#{customerNo}
+	    
+	</insert>
+
+	<!-- Etc게시판 글 조회 -->
+	<select id ="etc_view" parameterType = "int" resultType = "kr.co.board.dto.EtcBoard_Dto">
+
+	select postNo, postTitle, customerNickname, postDate, contents, postCategory, customerNo, viewCount from Etc_Category where postNo= #{postNo}
+
+	</select>
+	
+	<!-- Etc 글 조회수 업데이트 문 -->
+    <update id = "etcViewCnt_update" parameterType="int">    
+
+    update Etc_Category set viewCount = viewCount + 1 
+
+    where postNo = #{postNo}
+
+    </update>
+	
+
+	<!-- Etc게시판 글 수정 -->
+	<update id ="etc_update" parameterType= "kr.co.board.dto.EtcBoard_Dto">
+
+	Update Etc_Category 
+	set postTitle = #{postTitle},
+	    postCategory = #{postCategory},
+	    postDate = #{postDate},
+	    contents = #{contents}
+	    where postNo = #{postNo}
+
+	</update>
+
+	<!-- Etc게시판 글 삭제 -->
+	<delete id ="etc_delete" parameterType = "int">
+
+	Delete from Etc_Category where postNo = #{postNo}
+
+	</delete>
+    
+	<!-- Etc게시판 답글 갯수 수정 -->
+	<update id ="etc_commentsCount_update" parameterType="hashMap">
+
+	Update Etc_Category
+	set commentsCount =#{commentsCount}
+	where postNo =#{postNo}
+
+	</update>
+	
+	<!--Main페이지에 보여줄 최근 Etc 게시글 10개 조회 SQL문  -->
+	
+	<select id = "etc_mainPage" resultType = "kr.co.board.dto.EtcBoard_Dto">
+	
+	select * from Etc_category order by postNo desc limit 10
+	</select>	
 
 </mapper>

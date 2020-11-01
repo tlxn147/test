@@ -11,6 +11,21 @@ public class Customer_dto {
 	String customerEmail_2;
 	String customerInterest;
 	String customerGender;
+	String customerPic;
+	String customerGreetings;
+	public String getCustomerPic() {
+		return customerPic;
+	}
+	public void setCustomerPic(String customerPic) {
+		this.customerPic = customerPic;
+	}
+	public String getCustomerGreetings() {
+		return customerGreetings;
+	}
+	public void setCustomerGreetings(String customerGreetings) {
+		this.customerGreetings = customerGreetings;
+	}
+	
 	public int getCustomerNo() {
 		return customerNo;
 	}

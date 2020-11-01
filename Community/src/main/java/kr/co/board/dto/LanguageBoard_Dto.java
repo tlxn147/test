@@ -14,7 +14,7 @@ public class LanguageBoard_Dto {
     private String postCategory;   //글분류 
     private int customerNo; //유저번호
     private int viewCount; //조회수
-	private String postDateStr;
+	private String postDateStr; //작성하고 시간 얼마나 지났는지 
     
     public String getPostDateStr() {
 		return postDateStr;

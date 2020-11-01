@@ -65,8 +65,20 @@
 	    p:sqlSessionFactory-ref="sqlSessionFactory" />
 	<bean id="itBoardReply_Dao" class="kr.co.boardReply.dao.ItBoardReply_Dao" 
 	    p:sqlSessionFactory-ref="sqlSessionFactory" />
-	    <bean id="languageBoard_Dao" class="kr.co.board.dao.LanguageBoard_Dao"
+	<bean id="languageBoard_Dao" class="kr.co.board.dao.LanguageBoard_Dao"
 	    p:sqlSessionFactory-ref="sqlSessionFactory" />
 	<bean id="languageBoardReply_Dao" class="kr.co.boardReply.dao.LanguageBoardReply_Dao" 
-	    p:sqlSessionFactory-ref="sqlSessionFactory" />    
+	    p:sqlSessionFactory-ref="sqlSessionFactory" />
+	<bean id="publicServantBoard_Dao" class="kr.co.board.dao.PublicServantBoard_Dao"
+	    p:sqlSessionFactory-ref="sqlSessionFactory" />
+	<bean id="publicServantBoardReply_Dao" class="kr.co.boardReply.dao.PublicServantBoardReply_Dao" 
+	    p:sqlSessionFactory-ref="sqlSessionFactory" />
+	<bean id="certificateBoard_Dao" class="kr.co.board.dao.CertificateBoard_Dao"
+	    p:sqlSessionFactory-ref="sqlSessionFactory" />
+	<bean id="certificateBoardReply_Dao" class="kr.co.boardReply.dao.CertificateBoardReply_Dao" 
+	    p:sqlSessionFactory-ref="sqlSessionFactory" />
+	<bean id="etcBoard_Dao" class="kr.co.board.dao.EtcBoard_Dao"
+	    p:sqlSessionFactory-ref="sqlSessionFactory" />
+	<bean id="etcBoardReply_Dao" class="kr.co.boardReply.dao.EtcBoardReply_Dao" 
+	    p:sqlSessionFactory-ref="sqlSessionFactory" />                       
 </beans>

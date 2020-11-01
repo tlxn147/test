@@ -80,6 +80,122 @@ Select count(*) from IT_Comments where postNo = #{postNo}
 
 	</select>
 
+<!-- ============================================================= -->
+
+<!--PublicServant 댓글 조회 -->
+	<select id="publicServant_commentsList" parameterType="int" resultType="kr.co.boardReply.dto.PublicServantBoardReply_Dto">
+		select
+			*
+		from PublicServant_Comments
+			where postNo = #{postNo}		
+	</select>
+
+	<!--PublicServant 댓글 작성 -->
+	<insert id="publicServant_commentWrite" parameterType="kr.co.boardReply.dto.PublicServantBoardReply_Dto">
+		insert into PublicServant_Comments(postNo, customerNickname, comments, postDate, customerNo)
+			value(#{postNo}, #{customerNickname}, #{comments}, #{postDate}, #{customerNo})
+	</insert>
+		
+	<!--PublicServant 댓글 수정 -->
+	<update id="publicServant_commentUpdate" parameterType="kr.co.boardReply.dto.PublicServantBoardReply_Dto">
+		update PublicServant_Comments set
+			comments = #{comments},
+			postDate = #{postDate}
+		where commentsNo = #{commentsNo}
+			and postNo = #{postNo}	
+	</update>
+
+	<!--PublicServant 댓글 삭제 -->
+	<delete id="publicServant_commentDelete" parameterType="hashMap">
+		delete from PublicServant_Comments
+		where commentsNo = #{commentsNo}
+			and postNo = ${postNo}	
+	</delete>
+
+	<!-- PublicServant 하나의 글에 대한 답글 수  조회-->
+	<select id="publicServant_comments_count" parameterType="int" resultType="int">
+
+	Select count(*) from PublicServant_Comments where postNo = #{postNo}
+
+	</select>
+
+<!-- ============================================================= -->
+
+<!--Certificate 댓글 조회 -->
+	<select id="certificate_commentsList" parameterType="int" resultType="kr.co.boardReply.dto.CertificateBoardReply_Dto">
+		select
+			*
+		from Certificate_Comments
+			where postNo = #{postNo}		
+	</select>
+
+	<!--Certificate 댓글 작성 -->
+	<insert id="certificate_commentWrite" parameterType="kr.co.boardReply.dto.CertificateBoardReply_Dto">
+		insert into Certificate_Comments(postNo, customerNickname, comments, postDate, customerNo)
+			value(#{postNo}, #{customerNickname}, #{comments}, #{postDate}, #{customerNo})
+	</insert>
+		
+	<!--Certificate 댓글 수정 -->
+	<update id="certificate_commentUpdate" parameterType="kr.co.boardReply.dto.CertificateBoardReply_Dto">
+		update Certificate_Comments set
+			comments = #{comments},
+			postDate = #{postDate}
+		where commentsNo = #{commentsNo}
+			and postNo = #{postNo}	
+	</update>
+
+	<!--Certificate 댓글 삭제 -->
+	<delete id="certificate_commentDelete" parameterType="hashMap">
+		delete from Certificate_Comments
+		where commentsNo = #{commentsNo}
+			and postNo = ${postNo}	
+	</delete>
+
+	<!-- Certificate 하나의 글에 대한 답글 수  조회-->
+	<select id="certificate_comments_count" parameterType="int" resultType="int">
+
+	Select count(*) from Certificate_Comments where postNo = #{postNo}
+
+	</select>
+	
+<!-- ============================================================= -->
+
+<!--Etc 댓글 조회 -->
+	<select id="etc_commentsList" parameterType="int" resultType="kr.co.boardReply.dto.EtcBoardReply_Dto">
+		select
+			*
+		from Etc_Comments
+			where postNo = #{postNo}		
+	</select>
+
+	<!--Etc 댓글 작성 -->
+	<insert id="etc_commentWrite" parameterType="kr.co.boardReply.dto.EtcBoardReply_Dto">
+		insert into Etc_Comments(postNo, customerNickname, comments, postDate, customerNo)
+			value(#{postNo}, #{customerNickname}, #{comments}, #{postDate}, #{customerNo})
+	</insert>
+		
+	<!--Etc 댓글 수정 -->
+	<update id="etc_commentUpdate" parameterType="kr.co.boardReply.dto.EtcBoardReply_Dto">
+		update Etc_Comments set
+			comments = #{comments},
+			postDate = #{postDate}
+		where commentsNo = #{commentsNo}
+			and postNo = #{postNo}	
+	</update>
+
+	<!--Etc 댓글 삭제 -->
+	<delete id="etc_commentDelete" parameterType="hashMap">
+		delete from Etc_Comments
+		where commentsNo = #{commentsNo}
+			and postNo = ${postNo}	
+	</delete>
+
+	<!-- Etc 하나의 글에 대한 답글 수  조회-->
+	<select id="etc_comments_count" parameterType="int" resultType="int">
+
+	Select count(*) from Etc_Comments where postNo = #{postNo}
+
+	</select>	
 
 
 </mapper>

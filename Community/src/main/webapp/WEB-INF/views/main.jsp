@@ -61,6 +61,50 @@
 </tr>
 </c:forEach>
 </table><br/>
+<br>
+<br>
+
+<p>공무원</p>
+<table>
+<c:forEach items="${publicServantPost}" var="publicServantPost">
+<tr>
+  <td><a href="/kmweb/board/publicServantCategoryView?postNo=${publicServantPost.postNo}">${publicServantPost.postTitle}</a></td>
+  <td>${publicServantPost.customerNickname}</td>
+  <td>${publicServantPost.viewCount}명 봄</td>
+  <td>${publicServantPost.postDateStr}</td>
+</tr>
+</c:forEach>
+</table><br/>
+<br>
+<br>
+
+<p>자격증</p>
+<table>
+<c:forEach items="${certificatePost}" var="certificatePost">
+<tr>
+  <td><a href="/kmweb/board/certificateCategoryView?postNo=${certificatePost.postNo}">${certificatePost.postTitle}</a></td>
+  <td>${certificatePost.customerNickname}</td>
+  <td>${certificatePost.viewCount}명 봄</td>
+  <td>${certificatePost.postDateStr}</td>
+</tr>
+</c:forEach>
+</table><br/>
+<br>
+<br>
+
+<p>기타/자유</p>
+<table>
+<c:forEach items="${etcPost}" var="etcPost">
+<tr>
+  <td><a href="/kmweb/board/etcCategoryView?postNo=${etcPost.postNo}">${etcPost.postTitle}</a></td>
+  <td>${etcPost.customerNickname}</td>
+  <td>${etcPost.viewCount}명 봄</td>
+  <td>${etcPost.postDateStr}</td>
+</tr>
+</c:forEach>
+</table><br/>
+<br>
+<br>
 
 </body>
 </html>

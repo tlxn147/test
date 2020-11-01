@@ -24,8 +24,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 
+import kr.co.board.dto.CertificateBoard_Dto;
+import kr.co.board.dto.EtcBoard_Dto;
 import kr.co.board.dto.ItBoard_Dto;
 import kr.co.board.dto.LanguageBoard_Dto;
+import kr.co.board.dto.PublicServantBoard_Dto;
 import kr.co.board.service.BoardService;
 import kr.co.board.utils.CalculateTime;
 import kr.co.kakao.KakaoController;
@@ -65,8 +68,33 @@ public class Customer_controller {
 			String postDate = ct.calculateTime(date);
 			dto.setPostDateStr(postDate);
 		}
+		
+		List<PublicServantBoard_Dto> publicServantPost = bs.getMainPublicServantCategory(); 
+		for(PublicServantBoard_Dto dto : publicServantPost) {
+			Date date = dto.getPostDate();
+			String postDate = ct.calculateTime(date);
+			dto.setPostDateStr(postDate);
+		}
+		
+		List<CertificateBoard_Dto> certificatePost = bs.getMainCertificateCategory(); 
+		for(CertificateBoard_Dto dto : certificatePost) {
+			Date date = dto.getPostDate();
+			String postDate = ct.calculateTime(date);
+			dto.setPostDateStr(postDate);
+		}
+		
+		List<EtcBoard_Dto> etcPost = bs.getMainEtcCategory(); 
+		for(EtcBoard_Dto dto : etcPost) {
+			Date date = dto.getPostDate();
+			String postDate = ct.calculateTime(date);
+			dto.setPostDateStr(postDate);
+		}
+		
 		model.addAttribute("itPost", itPost);
 		model.addAttribute("languagePost", languagePost);
+		model.addAttribute("publicServantPost", publicServantPost);
+		model.addAttribute("certificatePost",certificatePost);
+		model.addAttribute("etcPost",etcPost);
 		
 		return "main";
 	}
@@ -154,9 +182,11 @@ public class Customer_controller {
 			String decStr = decrypt(list.getCustomerPW()); // id와 pw가 매칭되면 비밀번호 복호화
 			System.out.println(decStr);
 			if(decStr.equals(customerPW)) {
+				// 아이디와 비밀번호 모두 맞았을 시
 				session.setAttribute("login", list);
-				return "main";
+				return "redirect:/main";
 			} else {
+				// 아이디나 비밀번호가 틀렸을 시
 		        session.setAttribute("fail", user_id);
 				return "service/login";
 			}
@@ -215,7 +245,7 @@ public class Customer_controller {
  	@RequestMapping(value="user-details", method = RequestMethod.GET)
     public String main_user_details(Model m, HttpSession session) {
  		if(session.getAttribute("login") == null) {
-			return "service/login";
+ 			return "/error/login_error";
 	    } else {
 	    	String id = ((Customer_dto) session.getAttribute("login")).getCustomerId();
 	 		Customer_dto list = ms.main_login_user(id);
@@ -227,7 +257,7 @@ public class Customer_controller {
  	@RequestMapping(value="user-pw-chan", method = RequestMethod.GET)
     public String user_pw_chan(Model m, HttpSession session) {
  		if(session.getAttribute("login") == null) {
-			return "service/login";
+ 			return "/error/login_error";
 	    } else {
 			return "service/user_pw_chan";
 	    }
@@ -236,7 +266,7 @@ public class Customer_controller {
   	@RequestMapping(value="user_pw_chan_update",  method = { RequestMethod.GET, RequestMethod.POST })
     public String user_pw_chan_update(HttpSession session, String current_pw, String new_pw, HttpServletResponse response_equals) {
   		if(session.getAttribute("login") == null) {
- 			return "service/login";
+  			return "/error/login_error";
  	    } else {
 			try {
 				// 현재 비밀번호 입력
@@ -273,5 +303,15 @@ public class Customer_controller {
 			}
 			return "service/user_pw_chan";
  	    }
+  	}
+  	
+  	@RequestMapping(value="find_id", method = RequestMethod.GET)
+  	public String find_id() {
+  		return "service/find-id";
+  	}
+  	
+  	@RequestMapping(value="find_pw", method = RequestMethod.GET)
+  	public String find_pw() {
+  		return "service/find-pw";
   	}
 }

@@ -21,6 +21,10 @@
 			<input type="password" name="customerPW" id="pw_login" placeholder="비밀번호"><br>			
 			<div id="pw_login_chk"></div>
 			<input type="submit" id="login_chk" value="로그인">
+			<span>|</span>
+			<a href="/kmweb/main/find_id" onclick="window.open(this.href,'','width=500,height=600'); return false;">ID 찾기</a>
+			<span>|</span>
+			<a href="/kmweb/main/find_pw" onclick="window.open(this.href,'','width=500,height=600'); return false;">비밀번호 찾기</a>
 		</form>
 		<!-- 카카오 로그인 -->
 		<div id="btn_kakao_login">

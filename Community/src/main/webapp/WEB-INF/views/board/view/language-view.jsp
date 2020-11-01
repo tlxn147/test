@@ -82,7 +82,7 @@ $(document).ready(function() {
 </script>
 </c:forEach>
 </ul>
-<div>
+<div id="replyForm">
     <form method ="post" action = "/kmweb/board/languageCommentReply">
     
     <label>댓글 작성자</label>
@@ -106,6 +106,16 @@ $(document).ready(function(){
 		$("#btn_update").hide()
 		$("#btn_delete").hide()
 		}
+});
+</script>
+<!-- 로그인 안되어있으면 댓글작성기능 안보이게 하기 -->
+<script>
+$(document).ready(function(){
+	var loginNo ='${login.customerNo}'
+		if(loginNo == ''){
+			$("#replyForm").hide()
+			}
+	
 });
 </script>
 </body>
